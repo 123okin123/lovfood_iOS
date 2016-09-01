@@ -15,7 +15,7 @@ class CookingOfferDetailViewController: UITableViewController {
 
     var cookingEvent :CookingEvent?
     
-    
+    //git test
     var player :AVPlayer!
 
     @IBOutlet weak var messageTextField: UITextField!
