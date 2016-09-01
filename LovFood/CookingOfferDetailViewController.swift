@@ -89,6 +89,8 @@ class CookingOfferDetailViewController: UITableViewController {
     self.player.play()
     }
     
+    
+    
     func loadData() {
         cookingOfferDetailImageView.image = cookingEvent!.cookingOfferImage
         profileDetailImageView.image = cookingEvent!.profile?.profileImage
@@ -133,8 +135,14 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     
     
-    
-    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+       
+    }
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         messageTextField.resignFirstResponder()

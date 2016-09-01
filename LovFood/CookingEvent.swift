@@ -35,7 +35,7 @@ public class CookingEvent {
     var price :Double?
     
     
-    var attendeesCount = 0
+    var attendeesCount :Int?
     var usesVideo = false
     
     init() {}

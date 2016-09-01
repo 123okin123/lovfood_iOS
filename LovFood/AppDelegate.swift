@@ -16,6 +16,7 @@ import GeoFire
 public var screenwidth = UIScreen.mainScreen().bounds.size.width
 public var screenheight = UIScreen.mainScreen().bounds.size.height
 public var lovFoodColor = UIColor(red: 233/255, green: 103/255, blue: 103/255, alpha: 1)
+public var lovFoodSecondaryColor = UIColor(red: 249/255, green: 247/255, blue: 244/255, alpha: 1)
 
 public let dataBaseRef = FIRDatabase.database().reference()
 public var user :FIRUser!

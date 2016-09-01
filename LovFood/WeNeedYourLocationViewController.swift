@@ -34,7 +34,12 @@ class WeNeedYourLocationViewController: UIViewController, CLLocationManagerDeleg
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+        locationManager.requestLocation()
+        } else {
         locationManager.requestWhenInUseAuthorization()
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,7 +48,12 @@ class WeNeedYourLocationViewController: UIViewController, CLLocationManagerDeleg
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        locationManager.requestLocation()
+        
+        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+          locationManager.requestLocation()
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+        }
     }
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("didUpdateLocations")

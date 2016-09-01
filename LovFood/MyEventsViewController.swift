@@ -123,10 +123,8 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
     @IBAction func savedFromCreateEventUnwindSegue(segue:UIStoryboardSegue) {
       
         let createEventVC = segue.sourceViewController as! CreateEventViewController
-    
-        let date = createEventVC.date
-        print(createEventVC.cookingEvent)
-    
+        let cookingEvent = createEventVC.cookingEvent
+ 
   
 
         var lat = 1.0
@@ -135,30 +133,29 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         lat = location.coordinate.latitude
         long = location.coordinate.longitude
         }
-        for _ in 0...20 {
+        //for _ in 0...20 {
 
         let cookingEventRef = dataBaseRef.child("cookingEvents").childByAutoId()
-        let test :NSDictionary = [
-            "title" : "Asparagus with Salmon",
-            "description" : "Everybody loves asparagus with salmon. So let's cook together. I bought all the ingredients already, so you don't have to bring any. Costs are 4 € per person:)",
-            "cookingOfferImage" : "test",
+        let cookingEventDictionary :NSDictionary = [
+            "title" : cookingEvent.title!,
+            "description" : cookingEvent.description!,
             "userId" : user!.uid,
-            "eventDate" : convertNSDateToString(date)!,
-            "eventTime" : convertNSDateTimeToString(date)!,
+            "eventDate" : convertNSDateToString(cookingEvent.eventDate)!,
+            "eventTime" : convertNSDateTimeToString(cookingEvent.eventDate)!,
             "coordinates" : [
                 "lat": lat,
                 "long": long,
             ],
-            "occasion" : "cookingTogether",
+            "occasion" : cookingEvent.occasion!.rawValue,
             "price" : 10
         ]
-        cookingEventRef.setValue(test)
+        cookingEventRef.setValue(cookingEventDictionary)
         dataBaseRef.child("cookingEventsByDate")
-            .child(convertNSDateToString(date)!)
+            .child(convertNSDateToString(cookingEvent.eventDate)!)
             .child(cookingEventRef.key)
             .setValue(true)
         dataBaseRef.child("cookingEventsByOccasion")
-            .child("CookingTogether")
+            .child(cookingEvent.occasion!.rawValue)
             .child(cookingEventRef.key)
             .setValue(true)
         dataBaseRef.child("cookingEventsByHostGender")
@@ -166,7 +163,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
             .child(cookingEventRef.key)
             .setValue(true)
         geoFire.setLocation(currentUserLocation, forKey: cookingEventRef.key)
-   }
+//   }
     }
         
 
