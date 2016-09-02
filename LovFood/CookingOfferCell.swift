@@ -18,7 +18,7 @@ class CookingOfferCell: UICollectionViewCell {
     @IBOutlet weak var candelLightDinnerIndicator: UIImageView!
     @IBOutlet weak var cookingOfferDistance: UILabel!
     
-    var shadowLayer: CAShapeLayer!
+    
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -29,7 +29,7 @@ class CookingOfferCell: UICollectionViewCell {
         profileImage.layer.borderWidth = 3
         
         
-        //cellContentView.layer.cornerRadius = 10
+        cellContentView.layer.cornerRadius = 5
         
         cookingOfferTitle.layer.shadowColor = UIColor.blackColor().CGColor
         cookingOfferTitle.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -43,18 +43,7 @@ class CookingOfferCell: UICollectionViewCell {
         cookingOfferDistance.layer.shadowRadius = 1
         cookingOfferDistance.layer.masksToBounds = false
         
-        if shadowLayer == nil {
-            self.backgroundColor = UIColor.clearColor()
-            shadowLayer = CAShapeLayer()
-            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 3).CGPath
-            shadowLayer.fillColor = UIColor.whiteColor().CGColor
-            shadowLayer.shadowColor = UIColor(red: 220/255, green: 220/255, blue: 220/255, alpha: 1).CGColor
-            shadowLayer.shadowPath = shadowLayer.path
-            shadowLayer.shadowOffset = CGSize(width: 0.0, height: 1.5)
-            shadowLayer.shadowOpacity = 1.0
-            shadowLayer.shadowRadius = 0.0
-            layer.insertSublayer(shadowLayer, atIndex: 0)
-        }
+
     
     }
     

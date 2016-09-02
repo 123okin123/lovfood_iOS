@@ -13,12 +13,17 @@ class MyEventCell: UICollectionViewCell {
     @IBOutlet weak var cookingEventDateLabel: UILabel!
     @IBOutlet weak var cookingEventTitleLabel: UILabel!
     @IBOutlet weak var cookingEventAttendeesCountLabel: UILabel!
-    
     @IBOutlet weak var cellContentView: UIView!
     
     override func layoutSubviews() {
-        self.layer.cornerRadius = 10.0
-        self.layer.masksToBounds = true
+        super.layoutSubviews()
+        cellContentView.layer.cornerRadius = 5.0
+        cellContentView.layer.masksToBounds = true
+
         
+        layer.shadowColor = UIColor.grayColor().CGColor
+        layer.shadowOpacity = 0.3
+        layer.shadowOffset = CGSizeZero
+        layer.shadowRadius = 3
     }
 }

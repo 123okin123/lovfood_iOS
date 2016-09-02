@@ -14,8 +14,7 @@ import AVFoundation
 class CookingOfferDetailViewController: UITableViewController {
 
     var cookingEvent :CookingEvent?
-    
-    //git test
+   
     var player :AVPlayer!
 
     @IBOutlet weak var messageTextField: UITextField!
@@ -54,6 +53,7 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
         tableView.delegate = self
         tableView.dataSource = self
         loadData()
@@ -137,8 +137,9 @@ class CookingOfferDetailViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+
     }
+    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
        

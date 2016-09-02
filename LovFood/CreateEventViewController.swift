@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateEventViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CreateEventViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
 
     
     
@@ -16,7 +16,7 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var focusViewDoneButton: UIButton!
     @IBOutlet var focusView: UIView!
-    let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
     var cellRect = CGRect()
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -33,7 +33,7 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
         }
         }}
     
-    
+    var placeholderColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
 
       
     var cookingEvent = CookingEvent()
@@ -42,6 +42,8 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
     @IBAction func focusViewDoneButtonPressed(sender: UIButton) {
         cookingEvent.description = descriptionTextView.text
         cookingEvent.title = titleTextField.text
+
+        tableView.reloadData()
         if cookingEvent.title == "" {
         titleLabel.text = "Please give your Event a Title"
         titleLabel.textColor = lovFoodColor
@@ -133,7 +135,9 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
 
         tableView.delegate = self
         tableView.dataSource = self
-
+        descriptionTextView.delegate = self
+        descriptionTextView.text = "Your Description"
+        descriptionTextView.textColor = placeholderColor
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 240
@@ -182,11 +186,20 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
-        
+        if indexPath.section == 0 {
+        showFocusViewForIndexPath(indexPath)
+        }
+    }
+    
+    
+    
+    func showFocusViewForIndexPath(indexPath: NSIndexPath) {
         visualEffectView.frame = self.navigationController!.view.bounds
         visualEffectView.alpha = 0
         self.navigationController!.view.addSubview(visualEffectView)
+        
+        
+        
         
         cellRect = tableView.rectForRowAtIndexPath(indexPath)
         cellRect = CGRectOffset(cellRect, -tableView.contentOffset.x, -tableView.contentOffset.y)
@@ -196,15 +209,21 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
         focusView.frame = cellRect
         focusView.layer.cornerRadius = 10
         focusView.backgroundColor = UIColor.whiteColor()
+        focusView.layer.shadowColor = UIColor.grayColor().CGColor
+        focusView.layer.shadowOpacity = 0.5
+        focusView.layer.shadowOffset = CGSizeZero
+        focusView.layer.shadowRadius = 1
+        
         self.navigationController!.view.addSubview(focusView)
         titleTextField.alpha = 0
         descriptionTextView.alpha = 0
         focusViewDoneButton.alpha = 0
-
+        
         UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseInOut, animations: {
             self.visualEffectView.alpha = 1
             self.focusView.frame.size.height = screenheight - 280
             self.focusView.frame.origin.y = 50
+            
             }, completion: {done in
                 UIView.animateWithDuration(0.3, animations: {
                     self.titleTextField.alpha = 1
@@ -212,11 +231,20 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
                     self.descriptionTextView.alpha = 1
                 })
         })
-      
     }
     
-    
-    
+    func textViewDidBeginEditing(textView: UITextView) {
+        if descriptionTextView.textColor == placeholderColor {
+            descriptionTextView.text = nil
+            descriptionTextView.textColor = UIColor.blackColor()
+        }
+    }
+    func textViewDidEndEditing(textView: UITextView) {
+        if descriptionTextView.text.isEmpty {
+            descriptionTextView.text = "Your Description"
+            descriptionTextView.textColor = placeholderColor
+        }
+    }
 
     /*
     // MARK: - Navigation

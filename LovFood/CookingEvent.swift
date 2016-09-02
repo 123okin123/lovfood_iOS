@@ -21,6 +21,8 @@ public class CookingEvent {
     var userId :String?
     var eventDate: NSDate?
     var coordinates: CLLocationCoordinate2D?
+    var image :UIImage?
+    var imageURL :NSURL?
     
     var distance: CLLocationDistance? {get {
         if currentUserLocation != nil && coordinates != nil {
@@ -62,6 +64,9 @@ public class CookingEvent {
         if latitude != nil && longitude != nil {
             self.coordinates = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
         }
+    if let imageURLString = snapshot.value!["imageURL"] as? String {
+            self.imageURL = NSURL(string: imageURLString)
+    }
     self.occasion = .CookingTogether
     }
     

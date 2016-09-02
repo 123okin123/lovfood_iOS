@@ -32,7 +32,9 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         print("CollectionVCviewDidLoad")
-
+        let navigationBar = navigationController!.navigationBar
+        navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        navigationBar.shadowImage = UIImage(named: "navBarShadow")
         
         navigationItem.titleView = UIImageView(image: UIImage(named: "logoInApp"))
         self.collectionView?.delegate = self
@@ -164,7 +166,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: screenwidth, height: 140)
+        return CGSize(width: screenwidth - 10, height: 130)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -261,7 +263,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         }
         }
         
-        
+        // Check if cookingEvent has profile and load profileImage
         if let profile = cookingEvent.profile {
         cell.profileName.text = profile.firstName
         
@@ -287,7 +289,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                 task.resume()
             }
         }
-        
+
         if  profile.smallprofileImage == nil {
             let request = NSMutableURLRequest(URL: profile.profileSmallImageURL!)
             let session = NSURLSession.sharedSession()
@@ -302,9 +304,30 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
             }
             task.resume()
         }
-        //cookingEvent.profile = profile
         }
-            
+        // END OF: Check if cookingEvent has profile and load profileImage
+        
+        if let image = cookingEvent.image as UIImage? {
+            cell.cookingOfferImageView.image = image
+        } else {
+            if let imageURL = cookingEvent.imageURL {
+                let request = NSMutableURLRequest(URL: imageURL)
+                let session = NSURLSession.sharedSession()
+                let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+                    if error != nil {
+                        print("thers an error in the log")
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            cookingEvent.image = UIImage(data: data!)
+                            cell.cookingOfferImageView.image = cookingEvent.image
+                        }
+                        
+                    }
+                }
+                task.resume()
+            }
+        }
+        
             
         cell.tag = indexPath.row
         return cell

@@ -72,10 +72,10 @@ class TabBarController: UITabBarController {
     
     func addDBObserverFor(dayIndex :Int) {
         let date = NSDate().dateByAddingTimeInterval((60*60*(24))*Double(dayIndex))
-    
+  
         // Get all CookingEventIDs Nearby
         locationQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
-            
+       
             // Check if CookingEventID is in cookingEventsByDateDB
                 cookingEventsByDateDBRef
                 .child(convertNSDateToString(date)!)
@@ -125,9 +125,7 @@ class TabBarController: UITabBarController {
             }
         })
         
-        locationQuery.observeReadyWithBlock({
-            print("keyEntered Ready")
-        })
+
         
         
     }

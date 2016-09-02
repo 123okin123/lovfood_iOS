@@ -42,18 +42,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var locationManager = CLLocationManager()
     
-    
-    
-    
-    
-    
-    
-    
+
     
     
    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        UINavigationBar.appearance().shadowImage = UIImage(named: "navBarShadow")
+
+        
+        
         if let notification = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? [String: AnyObject] {
             let aps = notification["aps"] as! [String: AnyObject]
             print("launched from notifications \(aps)")
