@@ -134,7 +134,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         long = location.coordinate.longitude
         }
         //for _ in 0...20 {
-
+        // Creat Event
         let cookingEventRef = dataBaseRef.child("cookingEvents").childByAutoId()
         let cookingEventDictionary :NSDictionary = [
             "title" : cookingEvent.title!,
@@ -163,6 +163,27 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
             .child(cookingEventRef.key)
             .setValue(true)
         geoFire.setLocation(currentUserLocation, forKey: cookingEventRef.key)
+        
+        // Upload Photo
+        
+        let imageData :NSData = UIImageJPEGRepresentation(createEventVC.imageView.image!, 1)!
+        
+        let imageRef = storageRef.child("\(cookingEventRef.key).jpg")
+
+        imageRef.putData(imageData, metadata: nil) { metadata, error in
+            if (error != nil) {
+                // Uh-oh, an error occurred!
+            } else {
+                if let downloadURL = metadata!.downloadURL() {
+                cookingEventRef.child("imageURL").setValue(String(downloadURL))
+               
+                }
+            }
+        }
+        
+        
+        
+        
 //   }
     }
         

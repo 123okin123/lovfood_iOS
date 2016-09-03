@@ -7,8 +7,10 @@ target 'LovFood' do
     pod 'Firebase'
     pod 'Firebase/Database'
     pod 'Firebase/Auth'
+    pod 'Firebase/Storage'
 	pod 'JSQMessagesViewController'
     pod 'GeoFire', :path => '/Users/nikolaikratz/Dropbox/Xcode/LovFood/geofire-objc-master'
+    pod 'youtube-ios-player-helper', '~> 0.1.4'
   # Pods for LovFood
 
   target 'LovFoodTests' do

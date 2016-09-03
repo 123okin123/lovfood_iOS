@@ -55,7 +55,6 @@ public class CookingEvent {
     init(snapshot: FIRDataSnapshot) {
     self.title = snapshot.value?["title"] as? String
     self.description = snapshot.value?["description"] as? String
-    self.cookingOfferImage = UIImage(named: "friedPeppers")
     self.userId = snapshot.value?["userId"] as? String
     self.eventId = snapshot.key 
     self.eventDate = convertStringToNSDate(snapshot.value?["eventDate"] as? String)

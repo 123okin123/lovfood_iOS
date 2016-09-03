@@ -13,6 +13,7 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
     
     
 
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var focusViewDoneButton: UIButton!
     @IBOutlet var focusView: UIView!
@@ -34,8 +35,6 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
         }}
     
     var placeholderColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-
-      
     var cookingEvent = CookingEvent()
 
 
@@ -88,16 +87,6 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
     }
 
     
-
-
-    
-    @IBAction func specialButtonPressed(sender: FilterButton) {
-        if !sender.selected {
-            sender.selected = true
-        } else {
-            sender.selected = false
-        }
-    }
     
     @IBAction func candleLightSwitchPressed(sender: UISwitch) {
         let cell =  tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 1))! as UITableViewCell
@@ -165,11 +154,6 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
 
     }
     
-    
-    
-    
-    
-    
  
 
     
@@ -197,9 +181,7 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
         visualEffectView.frame = self.navigationController!.view.bounds
         visualEffectView.alpha = 0
         self.navigationController!.view.addSubview(visualEffectView)
-        
-        
-        
+    
         
         cellRect = tableView.rectForRowAtIndexPath(indexPath)
         cellRect = CGRectOffset(cellRect, -tableView.contentOffset.x, -tableView.contentOffset.y)

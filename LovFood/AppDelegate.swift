@@ -22,11 +22,15 @@ public let dataBaseRef = FIRDatabase.database().reference()
 public var user :FIRUser!
 public var userDBRef :FIRDatabaseReference!
 public var usersDBRef = dataBaseRef.child("users")
-public var cookingEventsDBRef = dataBaseRef.child("cookingEvents")
-public var cookingEventsByDateDBRef = dataBaseRef.child("cookingEventsByDate")
-public var cookingEventsByHostGenderDBRef = dataBaseRef.child("cookingEventsByHostGender")
-public var cookingEventsByOccasionDBRef = dataBaseRef.child("cookingEventsByOccasion")
+public let cookingEventsDBRef = dataBaseRef.child("cookingEvents")
+public let cookingEventsByDateDBRef = dataBaseRef.child("cookingEventsByDate")
+public let cookingEventsByHostGenderDBRef = dataBaseRef.child("cookingEventsByHostGender")
+public let cookingEventsByOccasionDBRef = dataBaseRef.child("cookingEventsByOccasion")
+
 public var filter = Filter()
+
+public let storage = FIRStorage.storage()
+public let storageRef = storage.referenceForURL("gs://lovfood-1328.appspot.com")
 
 public var currentUserLocation :CLLocation?
 public var userCookingProfile :CookingProfile!

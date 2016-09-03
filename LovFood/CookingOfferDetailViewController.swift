@@ -8,14 +8,14 @@
 
 import UIKit
 import MapKit
-import AVKit
-import AVFoundation
+import youtube_ios_player_helper
 
 class CookingOfferDetailViewController: UITableViewController {
 
     var cookingEvent :CookingEvent?
    
-    var player :AVPlayer!
+    @IBOutlet weak var ytplayerView: YTPlayerView!
+  
 
     @IBOutlet weak var messageTextField: UITextField!
     @IBOutlet weak var mapRadiusView: UIView! {
@@ -62,32 +62,22 @@ class CookingOfferDetailViewController: UITableViewController {
         
         
 
-        if cookingEvent!.usesVideo {
-        let playerController = AVPlayerViewController()
-        addChildViewController(playerController)
-        playerController.view.frame = cookingOfferDetailImageView.frame
-        cookingOfferDetailImageView.addSubview(playerController.view)
-        playerController.didMoveToParentViewController(self)
-        playerController.showsPlaybackControls = false
-        playerController.videoGravity = AVLayerVideoGravityResizeAspectFill
-
-        let path = NSBundle.mainBundle().pathForResource("tasty1", ofType:"mov")
-        player = AVPlayer(URL: NSURL(fileURLWithPath: path!))
-        player.muted = true
-        playerController.player = player
-        player.play()
-    
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(CookingOfferDetailViewController.playerItemDidReachEnd),
-                                                         name: AVPlayerItemDidPlayToEndTimeNotification,
-                                                         object: self.player.currentItem)
-        }
+       // if cookingEvent!.usesVideo {
+            cookingOfferDetailImageView.hidden = true
+            let playerVars = ["playsinline" : 1,
+                              "controls" : 1,
+                              "showinfo" : 0,
+                              "modestbranding" : 1,
+                              "loop" : 1,
+                              "autoplay" : 1,
+                              "playlist" : "qAi6WPFgfjU"
+                              ]
+            ytplayerView.loadWithVideoId("a6K7R2KV7fo", playerVars: playerVars)
+        //}
     }
 
     
-    func playerItemDidReachEnd() {
-    self.player.play()
-    }
+    
     
     
     
@@ -148,11 +138,11 @@ class CookingOfferDetailViewController: UITableViewController {
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         messageTextField.resignFirstResponder()
         if tableView.contentOffset.y < 0 {
-            cookingOfferDetailImageView.frame.size.height = 180 - tableView.contentOffset.y
-            cookingOfferDetailImageView.frame.origin.y = tableView.contentOffset.y
+            cookingOfferDetailImageView.frame.size.height = 210 - tableView.contentOffset.y
+            cookingOfferDetailImageView.frame.origin.y = tableView.contentOffset.y + 64
         } else {
-            cookingOfferDetailImageView.frame.size.height = 180
-            cookingOfferDetailImageView.frame.origin.y = 0
+            cookingOfferDetailImageView.frame.size.height = 210
+            cookingOfferDetailImageView.frame.origin.y = 64
 
         }
         

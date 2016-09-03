@@ -266,11 +266,14 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         // Check if cookingEvent has profile and load profileImage
         if let profile = cookingEvent.profile {
         cell.profileName.text = profile.firstName
-        
+       
         if let image = profile.profileImage as UIImage? {
             cell.profileImage.image = image
+        
         } else {
+            
             if let profileImageURL = profile.profileImageURL {
+              
                 let request = NSMutableURLRequest(URL: profileImageURL)
                 let session = NSURLSession.sharedSession()
                 let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
@@ -280,13 +283,16 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                         dispatch_async(dispatch_get_main_queue()) {
                             profile.profileImage = UIImage(data: data!)
                             cell.profileImage.image = profile.profileImage
-                            
+                        
                             
                         }
                         
                     }
                 }
                 task.resume()
+            } else {
+                profile.profileImage = nil
+                cell.profileImage.image = nil
             }
         }
 
@@ -306,11 +312,14 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         }
         }
         // END OF: Check if cookingEvent has profile and load profileImage
-        
+        print("testing if event has image")
         if let image = cookingEvent.image as UIImage? {
             cell.cookingOfferImageView.image = image
+            print("has image, lets put it on cell")
         } else {
+            print("has no image yet")
             if let imageURL = cookingEvent.imageURL {
+                print("has image url, lets download")
                 let request = NSMutableURLRequest(URL: imageURL)
                 let session = NSURLSession.sharedSession()
                 let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
@@ -320,15 +329,15 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                         dispatch_async(dispatch_get_main_queue()) {
                             cookingEvent.image = UIImage(data: data!)
                             cell.cookingOfferImageView.image = cookingEvent.image
+                           
+                            print("download completed")
                         }
-                        
                     }
                 }
                 task.resume()
             }
         }
-        
-            
+      
         cell.tag = indexPath.row
         return cell
     }
