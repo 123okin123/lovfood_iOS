@@ -12,6 +12,8 @@
 		100D81BC1D420DAB00861865 /* WeNeedYourLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100D81BB1D420DAB00861865 /* WeNeedYourLocationViewController.swift */; };
 		100D81BE1D42157E00861865 /* WeAreUpdatingLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100D81BD1D42157E00861865 /* WeAreUpdatingLocationViewController.swift */; };
 		10258F141D314F0B00B40F3F /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10258F131D314F0B00B40F3F /* ChatViewController.swift */; };
+		1040214C1D7D88FC008B9712 /* SelectImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1040214B1D7D88FC008B9712 /* SelectImageViewController.swift */; };
+		1040214E1D7D9011008B9712 /* SelectImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1040214D1D7D9011008B9712 /* SelectImageCell.swift */; };
 		1069A6FF1D3516C30061BB98 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1069A6FE1D3516C30061BB98 /* MoreViewController.swift */; };
 		106E6EEF1CF5E75C00B41262 /* HeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106E6EEE1CF5E75C00B41262 /* HeaderCollectionReusableView.swift */; };
 		106EC72D1D47DFA000F09D48 /* MyEventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106EC72C1D47DFA000F09D48 /* MyEventCell.swift */; };
@@ -90,6 +92,8 @@
 		1019CDDB1CEE008D00455C14 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MapViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1019CDDD1CEED5E900455C14 /* CookingOfferDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CookingOfferDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		10258F131D314F0B00B40F3F /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		1040214B1D7D88FC008B9712 /* SelectImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageViewController.swift; sourceTree = "<group>"; };
+		1040214D1D7D9011008B9712 /* SelectImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectImageCell.swift; sourceTree = "<group>"; };
 		1069A6FE1D3516C30061BB98 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		106E6EEE1CF5E75C00B41262 /* HeaderCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		106EC72C1D47DFA000F09D48 /* MyEventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEventCell.swift; sourceTree = "<group>"; };
@@ -258,6 +262,8 @@
 			children = (
 				10ADD8B21CF9916F00EC7658 /* MyEventsViewController.swift */,
 				109F6F2D1CFB7D1500DA2438 /* CreateEventViewController.swift */,
+				1040214B1D7D88FC008B9712 /* SelectImageViewController.swift */,
+				1040214D1D7D9011008B9712 /* SelectImageCell.swift */,
 			);
 			name = "My Events";
 			sourceTree = "<group>";
@@ -595,6 +601,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1040214E1D7D9011008B9712 /* SelectImageCell.swift in Sources */,
 				106F39331CF1F8BC00844E7E /* AppDelegate.swift in Sources */,
 				10D2BD031CF4850B00D7415F /* Filter.swift in Sources */,
 				100D81BC1D420DAB00861865 /* WeNeedYourLocationViewController.swift in Sources */,
@@ -615,6 +622,7 @@
 				10ADD8B11CF86EB800EC7658 /* MapAnnotation.swift in Sources */,
 				1069A6FF1D3516C30061BB98 /* MoreViewController.swift in Sources */,
 				106F393A1CF1F8BC00844E7E /* CookingProfile.swift in Sources */,
+				1040214C1D7D88FC008B9712 /* SelectImageViewController.swift in Sources */,
 				10D2BD011CF327F000D7415F /* FilterButton.swift in Sources */,
 				106F393B1CF1F8BC00844E7E /* CenterLocationButton.swift in Sources */,
 				100D81BE1D42157E00861865 /* WeAreUpdatingLocationViewController.swift in Sources */,

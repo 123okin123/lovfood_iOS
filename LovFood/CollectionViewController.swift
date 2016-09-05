@@ -32,9 +32,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         print("CollectionVCviewDidLoad")
-        let navigationBar = navigationController!.navigationBar
-        navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        navigationBar.shadowImage = UIImage(named: "navBarShadow")
+
         
         navigationItem.titleView = UIImageView(image: UIImage(named: "logoInApp"))
         self.collectionView?.delegate = self
@@ -297,7 +295,8 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         }
 
         if  profile.smallprofileImage == nil {
-            let request = NSMutableURLRequest(URL: profile.profileSmallImageURL!)
+            if let profileSmallImageURL = profile.profileSmallImageURL {
+            let request = NSMutableURLRequest(URL: profileSmallImageURL)
             let session = NSURLSession.sharedSession()
             let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
                 if error != nil {
@@ -309,6 +308,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                 }
             }
             task.resume()
+            }
         }
         }
         // END OF: Check if cookingEvent has profile and load profileImage
