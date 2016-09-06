@@ -45,6 +45,7 @@ PODS:
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
+  - MapleBacon (2.0.8)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
@@ -54,6 +55,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - GeoFire (from `/Users/nikolaikratz/Dropbox/Xcode/LovFood/geofire-objc-master`)
   - JSQMessagesViewController
+  - MapleBacon
   - youtube-ios-player-helper (~> 0.1.4)
 
 EXTERNAL SOURCES:
@@ -75,8 +77,9 @@ SPEC CHECKSUMS:
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  MapleBacon: 32e3590e1730485b93f450283ff242f9444efc12
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: d57bd4611b9275ec5af070b35b080b39462b302c
+PODFILE CHECKSUM: f013623d438f46ce17f6d5cedd026622c021250a
 
 COCOAPODS: 1.0.0

@@ -19,6 +19,11 @@ class CookingOfferCell: UICollectionViewCell {
     @IBOutlet weak var cookingOfferDistance: UILabel!
     
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.cookingOfferImageView?.image = nil
+    }
+    
     
     override func layoutSubviews() {
         super.layoutSubviews()

@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import GeoFire
+import MapleBacon
 
 private let reuseIdentifier = "MyEventsCellID"
 
@@ -93,14 +94,26 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! MyEventCell
         let cookingEvent = cookingEvents[indexPath.row]
-        cell.cookingEventImageView.image = cookingEvent.cookingOfferImage
+  
+
         cell.cookingEventTitleLabel.text = cookingEvent.title
         cell.cookingEventDateLabel.text = convertNSDateToString(cookingEvent.eventDate)
         cell.tag = indexPath.row
         
-    
-        // Configure the cell
-    
+        if let image = cookingEvents[indexPath.row].image {
+            cell.cookingEventImageView.image = image
+        } else {
+            if let imageURL = cookingEvent.imageURL {
+                cell.cookingEventImageView.setImageWithURL(imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
+                    self.cookingEvents[indexPath.row].image = instance?.image
+                    cell.cookingEventImageView.layer.addAnimation(CATransition(), forKey: nil)
+                })
+                
+                
+            }
+        }
+        
+
         return cell
     }
     
@@ -164,25 +177,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
             .setValue(true)
         geoFire.setLocation(currentUserLocation, forKey: cookingEventRef.key)
         
-        // Upload Photo
-        
-        let imageData :NSData = UIImageJPEGRepresentation(createEventVC.imageView.image!, 1)!
-        
-        let imageRef = storageRef.child("\(cookingEventRef.key).jpg")
 
-        imageRef.putData(imageData, metadata: nil) { metadata, error in
-            if (error != nil) {
-                // Uh-oh, an error occurred!
-            } else {
-                if let downloadURL = metadata!.downloadURL() {
-                cookingEventRef.child("imageURL").setValue(String(downloadURL))
-               
-                }
-            }
-        }
-        
-        
-        
         
 //   }
     }

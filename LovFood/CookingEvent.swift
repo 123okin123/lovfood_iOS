@@ -15,7 +15,6 @@ public class CookingEvent {
     
     var title :String?
     var description :String?
-    var cookingOfferImage :UIImage?
     var profile :CookingProfile?
     var eventId :String?
     var userId :String?

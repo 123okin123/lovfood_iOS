@@ -38,6 +38,7 @@
 		10784FC01CFD88D600AEFB14 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10784FBF1CFD88D600AEFB14 /* AVKit.framework */; };
 		10834F6A1CE35012002F4D95 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10834F691CE35012002F4D95 /* MapKit.framework */; };
 		10951C631D4A0BEC00F20115 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10951C621D4A0BEC00F20115 /* ProfileViewController.swift */; };
+		109B95361D7EE93300ABCD25 /* EventImageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109B95351D7EE93300ABCD25 /* EventImageObject.swift */; };
 		109F6F2E1CFB7D1500DA2438 /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109F6F2D1CFB7D1500DA2438 /* CreateEventViewController.swift */; };
 		10ADD8B11CF86EB800EC7658 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ADD8B01CF86EB800EC7658 /* MapAnnotation.swift */; };
 		10ADD8B31CF9916F00EC7658 /* MyEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ADD8B21CF9916F00EC7658 /* MyEventsViewController.swift */; };
@@ -108,6 +109,7 @@
 		10834F671CE34EBD002F4D95 /* CenterLocationButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CenterLocationButton.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		10834F691CE35012002F4D95 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		10951C621D4A0BEC00F20115 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		109B95351D7EE93300ABCD25 /* EventImageObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventImageObject.swift; sourceTree = "<group>"; };
 		109F6F2D1CFB7D1500DA2438 /* CreateEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventViewController.swift; sourceTree = "<group>"; };
 		10ADD8B01CF86EB800EC7658 /* MapAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		10ADD8B21CF9916F00EC7658 /* MyEventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEventsViewController.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				10ADD8B01CF86EB800EC7658 /* MapAnnotation.swift */,
 				10D2BD021CF4850B00D7415F /* Filter.swift */,
 				100604661CCCD5F400FDCF05 /* CookingEvent.swift */,
+				109B95351D7EE93300ABCD25 /* EventImageObject.swift */,
 				10834F651CE34AED002F4D95 /* CookingProfile.swift */,
 			);
 			name = Model;
@@ -622,6 +625,7 @@
 				10ADD8B11CF86EB800EC7658 /* MapAnnotation.swift in Sources */,
 				1069A6FF1D3516C30061BB98 /* MoreViewController.swift in Sources */,
 				106F393A1CF1F8BC00844E7E /* CookingProfile.swift in Sources */,
+				109B95361D7EE93300ABCD25 /* EventImageObject.swift in Sources */,
 				1040214C1D7D88FC008B9712 /* SelectImageViewController.swift in Sources */,
 				10D2BD011CF327F000D7415F /* FilterButton.swift in Sources */,
 				106F393B1CF1F8BC00844E7E /* CenterLocationButton.swift in Sources */,

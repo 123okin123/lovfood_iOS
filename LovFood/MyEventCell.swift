@@ -26,4 +26,10 @@ class MyEventCell: UICollectionViewCell {
         layer.shadowOffset = CGSizeZero
         layer.shadowRadius = 3
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.cookingEventImageView?.image = nil
+    }
+    
 }

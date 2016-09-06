@@ -227,6 +227,31 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
             descriptionTextView.textColor = placeholderColor
         }
     }
+    
+    @IBAction func backFromSelectImageSegue(segue: UIStoryboardSegue) {
+    let selectImageVC = segue.sourceViewController as! SelectImageViewController
+        if let imageObject = selectImageVC.selectedImage  {
+            
+            if let imageID = imageObject.imageID {
+            storageRef.child("eventImages/full/\(imageID)").dataWithMaxSize(2 * 1024 * 1024) { (data, error) -> Void in
+                if (error != nil) {
+                    // Uh-oh, an error occurred!
+                    print(error)
+                } else {
+                    let image: UIImage! = UIImage(data: data!)
+                    self.imageView.image = image
+                    
+                }
+            }
+            }
+            if let fullURL = imageObject.fullURL {
+            cookingEvent.imageURL = NSURL(string: fullURL)
+            }
+            
+
+        }
+    }
+    
 
     /*
     // MARK: - Navigation

@@ -24,10 +24,11 @@ class CookingOfferDetailViewController: UITableViewController {
         }
     }
     @IBOutlet weak var sendButton: UIButton!  { didSet {
-        sendButton.layer.cornerRadius = 3
+        sendButton.layer.cornerRadius = 5
         }
     }
-    @IBOutlet weak var cookingOfferDetailImageView: UIImageView!
+    @IBOutlet weak var cookingEventImageView: UIImageView!
+    
     @IBOutlet weak var profileDetailImageView: UIImageView! {didSet {
         profileDetailImageView.layer.cornerRadius = self.profileDetailImageView.frame.size.width / 2
         profileDetailImageView.clipsToBounds = true
@@ -62,18 +63,18 @@ class CookingOfferDetailViewController: UITableViewController {
         
         
 
-       // if cookingEvent!.usesVideo {
-            cookingOfferDetailImageView.hidden = true
+//        if cookingEvent!.usesVideo {
+      
             let playerVars = ["playsinline" : 1,
                               "controls" : 1,
                               "showinfo" : 0,
-                              "modestbranding" : 1,
+                              "modestbranding" : 0,
                               "loop" : 1,
                               "autoplay" : 1,
-                              "playlist" : "qAi6WPFgfjU"
+                              "playlist" : "mNHq7T9YHHs"
                               ]
-            ytplayerView.loadWithVideoId("a6K7R2KV7fo", playerVars: playerVars)
-        //}
+            ytplayerView.loadWithVideoId("mNHq7T9YHHs", playerVars: playerVars)
+  //      }
     }
 
     
@@ -82,7 +83,8 @@ class CookingOfferDetailViewController: UITableViewController {
     
     
     func loadData() {
-        cookingOfferDetailImageView.image = cookingEvent!.cookingOfferImage
+        
+        cookingEventImageView.image = cookingEvent!.image
         profileDetailImageView.image = cookingEvent!.profile?.profileImage
         cookingOfferTitleLabel.text = cookingEvent!.title
         cookingOfferDescriptionLabel.text = cookingEvent!.description
@@ -137,14 +139,16 @@ class CookingOfferDetailViewController: UITableViewController {
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         messageTextField.resignFirstResponder()
+        
         if tableView.contentOffset.y < 0 {
-            cookingOfferDetailImageView.frame.size.height = 210 - tableView.contentOffset.y
-            cookingOfferDetailImageView.frame.origin.y = tableView.contentOffset.y + 64
+            cookingEventImageView.frame.size.height = 210 - tableView.contentOffset.y
+            cookingEventImageView.frame.origin.y = tableView.contentOffset.y 
         } else {
-            cookingOfferDetailImageView.frame.size.height = 210
-            cookingOfferDetailImageView.frame.origin.y = 64
+            cookingEventImageView.frame.size.height = 210
+            cookingEventImageView.frame.origin.y = 0
 
         }
+
         
     }
     

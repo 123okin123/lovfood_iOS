@@ -12,6 +12,13 @@ private let reuseIdentifier = "imageCellID"
 
 class SelectImageViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
+    
+    
+    let dbQuery = dataBaseRef.child("eventImages")
+    
+    var images = [EventImageObject]()
+    var selectedImage :EventImageObject?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView?.delegate = self
@@ -27,16 +34,59 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        addDatabaseObserver()
+    }
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        dbQuery.removeAllObservers()
+    }
+    
+    
 
-    /*
+    func addDatabaseObserver() {
+        
+        dbQuery.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+            let eventImageObject = EventImageObject(snapshot: snapshot)
+            self.images.append(eventImageObject)
+            let index = self.images.indexOf{$0.imageID == eventImageObject.imageID}
+            self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+        })
+        dbQuery.observeEventType(.ChildRemoved, withBlock: { (snapshot) in
+            let eventImageObject = EventImageObject(snapshot: snapshot)
+            let index = self.images.indexOf{$0.imageID == eventImageObject.imageID}
+            self.images.removeAtIndex(index!)
+            self.collectionView?.deleteItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+        })
+        dbQuery.observeEventType(.ChildChanged, withBlock: { (snapshot) in
+            let eventImageObject = EventImageObject(snapshot: snapshot)
+            let index = self.images.indexOf{$0.imageID == eventImageObject.imageID}
+            self.images.removeAtIndex(index!)
+            self.images.insert(eventImageObject, atIndex: index!)
+            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+        })
+        
+    }
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "backFromSelectImageSegueID" {
+            if let cell = sender as? UICollectionViewCell {
+                if let indexPath = collectionView?.indexPathForCell(cell) {
+                selectedImage = images[indexPath.row]
+                }
+            
+            }
+        }
+       
+
     }
-    */
+    
 
     // MARK: UICollectionViewDataSource
 
@@ -48,13 +98,13 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 10
+        return images.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SelectImageCell
         if cell.imageView.image == nil {
-        storageRef.child("eventImages/thumb/thumb_steak.jpeg").dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
+        storageRef.child("eventImages/thumb/\(images[indexPath.row].imageID!)").dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
             if (error != nil) {
                 // Uh-oh, an error occurred!
                 print(error)
@@ -63,11 +113,12 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
                 // Data for "images/island.jpg" is returned
                 let image: UIImage! = UIImage(data: data!)
                 cell.imageView.image = image
+                self.images[indexPath.row].thumbImage = image
                 
             }
         }
         }
-    
+        cell.tag = indexPath.row
         return cell
     }
     
@@ -91,7 +142,9 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
    
 
     // MARK: UICollectionViewDelegate
+    
 
+    
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {

@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MapleBacon.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-LovFood.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,11 +47,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0C2D656979BA7545DF23DACB856B4438</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>1ED4DFAAD25E1999D0244868457A351E</key>
 		<dict>
 			<key>primary</key>
@@ -57,7 +57,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>601C94445B6538ABEDBA063E453D3FB8</key>
+		<key>739ED70E1E62D3794C5C735B789951BD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -68,6 +68,16 @@
 			<true/>
 		</dict>
 		<key>7EC8BCC47D7AFA01CEDD4FF19E797048</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8B8CF866FE893069D7420C47C2C3333D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8EE2130E28914C9A846631C14A78F9F3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -11,6 +11,8 @@ target 'LovFood' do
 	pod 'JSQMessagesViewController'
     pod 'GeoFire', :path => '/Users/nikolaikratz/Dropbox/Xcode/LovFood/geofire-objc-master'
     pod 'youtube-ios-player-helper', '~> 0.1.4'
+    pod 'MapleBacon'
+    
   # Pods for LovFood
 
   target 'LovFoodTests' do

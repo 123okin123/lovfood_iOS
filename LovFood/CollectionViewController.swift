@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import MapKit
 import GeoFire
+import MapleBacon
 
 private let reuseIdentifier = "cookingOfferCellID"
 
@@ -311,33 +312,23 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
             }
         }
         }
+        
         // END OF: Check if cookingEvent has profile and load profileImage
-        print("testing if event has image")
-        if let image = cookingEvent.image as UIImage? {
+        if let image = cookingEventsArrays[indexPath.section][indexPath.row].image {
             cell.cookingOfferImageView.image = image
-            print("has image, lets put it on cell")
         } else {
-            print("has no image yet")
             if let imageURL = cookingEvent.imageURL {
-                print("has image url, lets download")
-                let request = NSMutableURLRequest(URL: imageURL)
-                let session = NSURLSession.sharedSession()
-                let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
-                    if error != nil {
-                        print("thers an error in the log")
-                    } else {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            cookingEvent.image = UIImage(data: data!)
-                            cell.cookingOfferImageView.image = cookingEvent.image
-                           
-                            print("download completed")
-                        }
-                    }
-                }
-                task.resume()
+                cell.cookingOfferImageView.setImageWithURL(imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
+                    cookingEventsArrays[indexPath.section][indexPath.row].image = instance?.image
+                    cell.cookingOfferImageView.layer.addAnimation(CATransition(), forKey: nil)
+                })
+
+            
             }
         }
-      
+     
+        
+        
         cell.tag = indexPath.row
         return cell
     }
