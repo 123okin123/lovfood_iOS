@@ -40,6 +40,7 @@
 		10951C631D4A0BEC00F20115 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10951C621D4A0BEC00F20115 /* ProfileViewController.swift */; };
 		109B95361D7EE93300ABCD25 /* EventImageObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109B95351D7EE93300ABCD25 /* EventImageObject.swift */; };
 		109F6F2E1CFB7D1500DA2438 /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109F6F2D1CFB7D1500DA2438 /* CreateEventViewController.swift */; };
+		10A043961D81AFFA00538C08 /* PublicVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A043951D81AFFA00538C08 /* PublicVariables.swift */; };
 		10ADD8B11CF86EB800EC7658 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ADD8B01CF86EB800EC7658 /* MapAnnotation.swift */; };
 		10ADD8B31CF9916F00EC7658 /* MyEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10ADD8B21CF9916F00EC7658 /* MyEventsViewController.swift */; };
 		10D2BD011CF327F000D7415F /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D2BD001CF327F000D7415F /* FilterButton.swift */; };
@@ -111,6 +112,7 @@
 		10951C621D4A0BEC00F20115 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		109B95351D7EE93300ABCD25 /* EventImageObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventImageObject.swift; sourceTree = "<group>"; };
 		109F6F2D1CFB7D1500DA2438 /* CreateEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventViewController.swift; sourceTree = "<group>"; };
+		10A043951D81AFFA00538C08 /* PublicVariables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicVariables.swift; sourceTree = "<group>"; };
 		10ADD8B01CF86EB800EC7658 /* MapAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		10ADD8B21CF9916F00EC7658 /* MyEventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEventsViewController.swift; sourceTree = "<group>"; };
 		10D2BD001CF327F000D7415F /* FilterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				1006043A1CCCD47B00FDCF05 /* Main.storyboard */,
 				10951C621D4A0BEC00F20115 /* ProfileViewController.swift */,
 				100604341CCCD47B00FDCF05 /* AppDelegate.swift */,
+				10A043951D81AFFA00538C08 /* PublicVariables.swift */,
 				10FDE53F1D34CF550056394D /* TabBarController.swift */,
 				100D81C51D421DB700861865 /* Additional VCs */,
 				100D81C41D421DA900861865 /* More */,
@@ -608,6 +611,7 @@
 				106F39331CF1F8BC00844E7E /* AppDelegate.swift in Sources */,
 				10D2BD031CF4850B00D7415F /* Filter.swift in Sources */,
 				100D81BC1D420DAB00861865 /* WeNeedYourLocationViewController.swift in Sources */,
+				10A043961D81AFFA00538C08 /* PublicVariables.swift in Sources */,
 				106F39341CF1F8BC00844E7E /* MapViewController.swift in Sources */,
 				106F39351CF1F8BC00844E7E /* CollectionViewController.swift in Sources */,
 				106EC72D1D47DFA000F09D48 /* MyEventCell.swift in Sources */,

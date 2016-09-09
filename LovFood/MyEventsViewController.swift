@@ -126,6 +126,10 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 20
+    }
+    
     
     
     @IBAction func canceledFromCreateEventUnwindSegue(segue:UIStoryboardSegue) {
@@ -160,7 +164,8 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
                 "long": long,
             ],
             "occasion" : cookingEvent.occasion!.rawValue,
-            "price" : 10
+            "price" : 10,
+            "imageURL" : String(cookingEvent.imageURL!)
         ]
         cookingEventRef.setValue(cookingEventDictionary)
         dataBaseRef.child("cookingEventsByDate")
@@ -194,6 +199,9 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         cookingEventsByOccasionDBRef.child(cookingEvent.occasion!.rawValue).child(cookingEvent.eventId!).removeValue()
         geofireRef.child(cookingEvent.eventId!).removeValue()
     }
+    
+    
+
     
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking

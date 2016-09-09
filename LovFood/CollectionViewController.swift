@@ -253,12 +253,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         switch occasion {
         case .CandleLightDinner:
             cell.candelLightDinnerIndicator.hidden = false
-            cell.candelLightDinnerIndicator.image = UIImage(named: "restaurant")
+            cell.candelLightDinnerIndicator.image = UIImage(named: "heart")
         case .CookingTogether:
             cell.candelLightDinnerIndicator.hidden = true
         case .CommercialDining:
             cell.candelLightDinnerIndicator.hidden = false
-            cell.candelLightDinnerIndicator.image = UIImage(named: "heart")
+            cell.candelLightDinnerIndicator.image = UIImage(named: "restaurant")
         }
         }
         
@@ -315,9 +315,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         
         // END OF: Check if cookingEvent has profile and load profileImage
         if let image = cookingEventsArrays[indexPath.section][indexPath.row].image {
+            
             cell.cookingOfferImageView.image = image
         } else {
+            
             if let imageURL = cookingEvent.imageURL {
+                print("ping3")
                 cell.cookingOfferImageView.setImageWithURL(imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
                     cookingEventsArrays[indexPath.section][indexPath.row].image = instance?.image
                     cell.cookingOfferImageView.layer.addAnimation(CATransition(), forKey: nil)

@@ -38,6 +38,7 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         addDatabaseObserver()
+       
     }
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)

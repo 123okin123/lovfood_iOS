@@ -34,7 +34,7 @@ class CookingOfferCell: UICollectionViewCell {
         profileImage.layer.borderWidth = 3
         
         
-        cellContentView.layer.cornerRadius = 5
+        cellContentView.layer.cornerRadius = 8
         
         cookingOfferTitle.layer.shadowColor = UIColor.blackColor().CGColor
         cookingOfferTitle.layer.shadowOffset = CGSize(width: 1, height: 1)

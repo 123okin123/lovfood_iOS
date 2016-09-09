@@ -244,8 +244,10 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
                 }
             }
             }
+
             if let fullURL = imageObject.fullURL {
             cookingEvent.imageURL = NSURL(string: fullURL)
+                print(cookingEvent.imageURL)
             }
             
 

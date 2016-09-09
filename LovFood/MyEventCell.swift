@@ -17,14 +17,14 @@ class MyEventCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        cellContentView.layer.cornerRadius = 5.0
+        cellContentView.layer.cornerRadius = 7.0
         cellContentView.layer.masksToBounds = true
 
         
         layer.shadowColor = UIColor.grayColor().CGColor
-        layer.shadowOpacity = 0.3
+        layer.shadowOpacity = 0.4
         layer.shadowOffset = CGSizeZero
-        layer.shadowRadius = 3
+        layer.shadowRadius = 5
     }
     
     override func prepareForReuse() {

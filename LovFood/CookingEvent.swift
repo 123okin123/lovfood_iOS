@@ -65,7 +65,14 @@ public class CookingEvent {
     if let imageURLString = snapshot.value!["imageURL"] as? String {
             self.imageURL = NSURL(string: imageURLString)
     }
-    self.occasion = .CookingTogether
+    if let occasionRawValue = snapshot.value?["occasion"] as? String {
+        switch occasionRawValue {
+        case "CandleLightDinner": occasion = .CandleLightDinner
+        case "CookingTogether": occasion = .CookingTogether
+        case "CommercialDining": occasion = .CommercialDining
+        default: break
+        }
+    }
     }
     
 

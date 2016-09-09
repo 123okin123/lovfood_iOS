@@ -19,7 +19,7 @@ class PlusMinusButton: UIButton {
     override func drawRect(rect: CGRect) {
         // Drawing code
         let backgroundpath = UIBezierPath(ovalInRect: self.bounds)
-        UIColor(red: 233/255, green: 106/255, blue: 103/255, alpha: 1.0).setFill()
+        lovFoodColor.setFill()
         backgroundpath.fill()
         
         let minuspath = UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: 5, y: self.bounds.size.height / 2 - 1), size: CGSize(width: 20, height: 2)), cornerRadius: 2)
