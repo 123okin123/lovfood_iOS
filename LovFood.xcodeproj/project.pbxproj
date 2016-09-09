@@ -254,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				106EC72C1D47DFA000F09D48 /* MyEventCell.swift */,
+				1040214D1D7D9011008B9712 /* SelectImageCell.swift */,
 				106E6EEE1CF5E75C00B41262 /* HeaderCollectionReusableView.swift */,
 				100604681CCCDDBC00FDCF05 /* CookingOfferCell.swift */,
 				10834F671CE34EBD002F4D95 /* CenterLocationButton.swift */,
@@ -269,7 +270,6 @@
 				10ADD8B21CF9916F00EC7658 /* MyEventsViewController.swift */,
 				109F6F2D1CFB7D1500DA2438 /* CreateEventViewController.swift */,
 				1040214B1D7D88FC008B9712 /* SelectImageViewController.swift */,
-				1040214D1D7D9011008B9712 /* SelectImageCell.swift */,
 			);
 			name = "My Events";
 			sourceTree = "<group>";
