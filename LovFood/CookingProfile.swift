@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 import Firebase
 
-public class CookingProfile {
+open class CookingProfile {
     var firstName :String?
     var lastName :String?
     var userName :String?
     var email :String?
     
-    var profileImageURL :NSURL?
-    var profileSmallImageURL :NSURL?
+    var profileImageURL :URL?
+    var profileSmallImageURL :URL?
     
     var profileText :String?
     var profileImage :UIImage?
@@ -30,21 +30,21 @@ public class CookingProfile {
     init(){}
     
     init(snapshot: FIRDataSnapshot) {
-    self.firstName = snapshot.value!["firstname"] as? String
-    self.lastName = snapshot.value!["lastname"] as? String
-    self.userName = snapshot.value!["username"] as? String
-    self.email = snapshot.value!["email"] as? String
-    if let profileImageURLString = snapshot.value!["profileImageURL"] as? String {
-            self.profileImageURL = NSURL(string: profileImageURLString)
+    self.firstName = (snapshot.value as! NSDictionary)["firstname"] as? String
+    self.lastName = (snapshot.value as! NSDictionary)["lastname"] as? String
+    self.userName = (snapshot.value as! NSDictionary)["username"] as? String
+    self.email = (snapshot.value as! NSDictionary)["email"] as? String
+    if let profileImageURLString = (snapshot.value as! NSDictionary)["profileImageURL"] as? String {
+            self.profileImageURL = URL(string: profileImageURLString)
     }
-    if let profileSmallImageURLString = snapshot.value!["profileSmallImageURL"] as? String {
-            self.profileSmallImageURL = NSURL(string: profileSmallImageURLString)
+    if let profileSmallImageURLString = (snapshot.value as! NSDictionary)["profileSmallImageURL"] as? String {
+            self.profileSmallImageURL = URL(string: profileSmallImageURLString)
     }
-    if let genderString = snapshot.value!["gender"] as? String {
+    if let genderString = (snapshot.value as! NSDictionary)["gender"] as? String {
         switch genderString {
         case "male": gender = .Male
         case "female": gender = .Female
-        default: gender = .None
+        default: gender = .none
         }
     }
     }

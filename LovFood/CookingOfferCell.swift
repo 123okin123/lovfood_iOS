@@ -30,19 +30,19 @@ class CookingOfferCell: UICollectionViewCell {
         
         profileImage.layer.cornerRadius = self.profileImage.frame.size.width / 2
         profileImage.clipsToBounds = true
-        profileImage.layer.borderColor = UIColor.whiteColor().CGColor
+        profileImage.layer.borderColor = UIColor.white.cgColor
         profileImage.layer.borderWidth = 3
         
         
         cellContentView.layer.cornerRadius = 8
         
-        cookingOfferTitle.layer.shadowColor = UIColor.blackColor().CGColor
+        cookingOfferTitle.layer.shadowColor = UIColor.black.cgColor
         cookingOfferTitle.layer.shadowOffset = CGSize(width: 1, height: 1)
         cookingOfferTitle.layer.shadowOpacity = 0.5
         cookingOfferTitle.layer.shadowRadius = 1
         cookingOfferTitle.layer.masksToBounds = false
         
-        cookingOfferDistance.layer.shadowColor = UIColor.blackColor().CGColor
+        cookingOfferDistance.layer.shadowColor = UIColor.black.cgColor
         cookingOfferDistance.layer.shadowOffset = CGSize(width: 1, height: 1)
         cookingOfferDistance.layer.shadowOpacity = 0.5
         cookingOfferDistance.layer.shadowRadius = 1

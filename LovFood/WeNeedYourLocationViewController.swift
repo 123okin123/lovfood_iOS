@@ -12,19 +12,19 @@ import MapKit
 class WeNeedYourLocationViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var openSettingsButton: UIButton! {didSet{
-        openSettingsButton.layer.borderColor = UIColor.whiteColor().CGColor
+        openSettingsButton.layer.borderColor = UIColor.white.cgColor
         openSettingsButton.layer.borderWidth = 1
         openSettingsButton.layer.cornerRadius = 5
         }}
     
     
     
-    var locationManager = (UIApplication.sharedApplication().delegate as! AppDelegate).locationManager
+    var locationManager = (UIApplication.shared.delegate as! AppDelegate).locationManager
     
-    @IBAction func openSettingsButtonPressed(sender: UIButton) {
-        let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
+    @IBAction func openSettingsButtonPressed(_ sender: UIButton) {
+        let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)
         if let url = settingsUrl {
-            UIApplication.sharedApplication().openURL(url)
+            UIApplication.shared.openURL(url)
         }
     }
     override func viewDidLoad() {
@@ -32,9 +32,9 @@ class WeNeedYourLocationViewController: UIViewController, CLLocationManagerDeleg
         locationManager.delegate = self
         // Do any additional setup after loading the view.
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
         locationManager.requestLocation()
         } else {
         locationManager.requestWhenInUseAuthorization()
@@ -47,29 +47,29 @@ class WeNeedYourLocationViewController: UIViewController, CLLocationManagerDeleg
         // Dispose of any resources that can be recreated.
     }
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         
-        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
           locationManager.requestLocation()
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
     }
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("didUpdateLocations")
         if !(locations.isEmpty) {
         currentUserLocation = locations.last!
             if let tabBarC = presentingViewController as? TabBarController {
                 if let navVC = tabBarC.viewControllers![0] as? UINavigationController {
                     if let collectionVC = navVC.viewControllers[0] as? CollectionViewController {
-                        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                        presentingViewController?.dismiss(animated: true, completion: nil)
                     }
                 }
             }
         
         }
     }
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
         locationManager.requestLocation()
     }

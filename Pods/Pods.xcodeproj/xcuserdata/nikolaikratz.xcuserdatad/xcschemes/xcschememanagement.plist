@@ -4,6 +4,26 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Bolts.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FBSDKCoreKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FBSDKLoginKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FBSDKShareKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GeoFire.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,12 +72,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>21E79B6FDE2F23D520722DDBEFC68FF1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2E303C3CE7513908EE880D9CA833AFAE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>30D7FCF8072F5D59AE1C98D94F9A6EC9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>59CDDB315DD2B098E0CD9ED56B026F4B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>739ED70E1E62D3794C5C735B789951BD</key>
+		<key>6EDC37F3FA92533C6AC3562458AA91F1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,12 +107,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8B8CF866FE893069D7420C47C2C3333D</key>
+		<key>89A95ADB1FFCC5CED539A30896290323</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8EE2130E28914C9A846631C14A78F9F3</key>
+		<key>9D0F2E5EA1B46A5D72FFD42B0B39DBBC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F5B452D6E611E737C515EB5BEB3ECFDE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

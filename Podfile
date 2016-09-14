@@ -9,9 +9,12 @@ target 'LovFood' do
     pod 'Firebase/Auth'
     pod 'Firebase/Storage'
 	pod 'JSQMessagesViewController'
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKLoginKit'
+    pod 'FBSDKShareKit'
     pod 'GeoFire', :path => '/Users/nikolaikratz/Dropbox/Xcode/LovFood/geofire-objc-master'
     pod 'youtube-ios-player-helper', '~> 0.1.4'
-    pod 'MapleBacon'
+    pod 'MapleBacon', :git => 'https://github.com/JanGorman/MapleBacon.git', :branch => 'Swift/3'
     
   # Pods for LovFood
 

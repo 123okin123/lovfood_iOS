@@ -16,19 +16,19 @@ class PlusMinusButton: UIButton {
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // Drawing code
-        let backgroundpath = UIBezierPath(ovalInRect: self.bounds)
+        let backgroundpath = UIBezierPath(ovalIn: self.bounds)
         lovFoodColor.setFill()
         backgroundpath.fill()
         
         let minuspath = UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: 5, y: self.bounds.size.height / 2 - 1), size: CGSize(width: 20, height: 2)), cornerRadius: 2)
-        UIColor.whiteColor().setFill()
+        UIColor.white.setFill()
         minuspath.fill()
         
         if isPlusButton {
         let pluspath = UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: self.bounds.size.width / 2 - 1, y: 5), size: CGSize(width: 2, height: 20)), cornerRadius: 2)
-        UIColor.whiteColor().setFill()
+        UIColor.white.setFill()
         pluspath.fill()
         }
     }

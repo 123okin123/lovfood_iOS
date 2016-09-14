@@ -32,7 +32,7 @@ class CookingOfferDetailViewController: UITableViewController {
     @IBOutlet weak var profileDetailImageView: UIImageView! {didSet {
         profileDetailImageView.layer.cornerRadius = self.profileDetailImageView.frame.size.width / 2
         profileDetailImageView.clipsToBounds = true
-        profileDetailImageView.layer.borderColor = UIColor.whiteColor().CGColor
+        profileDetailImageView.layer.borderColor = UIColor.white.cgColor
         profileDetailImageView.layer.borderWidth = 3
         }}
     @IBOutlet weak var cookingOfferTitleLabel: UILabel!
@@ -48,7 +48,7 @@ class CookingOfferDetailViewController: UITableViewController {
     @IBOutlet weak var candleLightView: UIView!
     @IBOutlet weak var mapView: MKMapView!
     
-    @IBAction func sendButtonPressed(sender: UIButton) {
+    @IBAction func sendButtonPressed(_ sender: UIButton) {
         messageTextField.text = ""
         messageTextField.resignFirstResponder()
     }
@@ -72,8 +72,8 @@ class CookingOfferDetailViewController: UITableViewController {
                               "loop" : 1,
                               "autoplay" : 1,
                               "playlist" : "mNHq7T9YHHs"
-                              ]
-            ytplayerView.loadWithVideoId("mNHq7T9YHHs", playerVars: playerVars)
+                              ] as [String : Any]
+            ytplayerView.load(withVideoId: "mNHq7T9YHHs", playerVars: playerVars)
   //      }
     }
 
@@ -94,13 +94,13 @@ class CookingOfferDetailViewController: UITableViewController {
         
         switch cookingEvent!.occasion {
         case .CandleLightDinner?:
-            candleLightDinnerIndicator.highlighted = true
-            candleLightView.hidden = false
-            cookingTogetherView.hidden = true
+            candleLightDinnerIndicator.isHighlighted = true
+            candleLightView.isHidden = false
+            cookingTogetherView.isHidden = true
         case .CookingTogether?:
-            candleLightDinnerIndicator.highlighted = false
-            candleLightView.hidden = true
-            cookingTogetherView.hidden = false
+            candleLightDinnerIndicator.isHighlighted = false
+            candleLightView.isHidden = true
+            cookingTogetherView.isHidden = false
         case .CommercialDining?: break
         case nil: break
         }
@@ -108,8 +108,8 @@ class CookingOfferDetailViewController: UITableViewController {
         if cookingEvent?.price != nil {
         priceLable.text = "\(cookingEvent!.price!) €"
         } else {
-        priceLable.hidden = true
-        priceLabelDescription.hidden = true
+        priceLable.isHidden = true
+        priceLabelDescription.isHidden = true
         }
 
     
@@ -127,17 +127,17 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
        
     }
     
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         messageTextField.resignFirstResponder()
         
         if tableView.contentOffset.y < 0 {
@@ -152,14 +152,14 @@ class CookingOfferDetailViewController: UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
         return UITableViewAutomaticDimension
   
     }
     
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             switch section {
             
             case 2:

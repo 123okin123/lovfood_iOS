@@ -20,7 +20,7 @@ class MessagesOverviewViewController: UITableViewController {
         didSet {
             for sPIBG in smallProfileImageBG {
                 sPIBG.layer.cornerRadius = 15
-                sPIBG.layer.shadowColor = UIColor.darkGrayColor().CGColor
+                sPIBG.layer.shadowColor = UIColor.darkGray.cgColor
                 sPIBG.layer.shadowOpacity = 0.5
                 sPIBG.layer.shadowOffset = CGSize(width: 1, height: 1)
             }
@@ -46,12 +46,12 @@ class MessagesOverviewViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 2
     }
@@ -105,9 +105,9 @@ class MessagesOverviewViewController: UITableViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.prepareForSegue(segue, sender: sender)
-        let chatVc = segue.destinationViewController as! ChatViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        let chatVc = segue.destination as! ChatViewController
         chatVc.senderId = FIRAuth.auth()?.currentUser?.uid
         chatVc.senderDisplayName = "niko"
     }

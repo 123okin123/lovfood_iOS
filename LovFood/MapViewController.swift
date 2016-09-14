@@ -17,11 +17,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     
     
-    @IBAction func centerLocationButton(sender: CenterLocationButton) {
+    @IBAction func centerLocationButton(_ sender: CenterLocationButton) {
             if mapView.showsUserLocation {
                 let coordinate = mapView.userLocation.coordinate
                 if coordinate.latitude != 0 &&  coordinate.longitude != 0 {
-                    mapView.setCenterCoordinate(coordinate, animated: true)
+                    mapView.setCenter(coordinate, animated: true)
                 }
             }
     }
@@ -37,7 +37,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
   
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
      
        
@@ -70,35 +70,35 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         print(mapView.region)
         if round(mapView.centerCoordinate.latitude * 100) == round(mapView.userLocation.coordinate.latitude * 100) && round(mapView.centerCoordinate.longitude * 100) == round(mapView.userLocation.coordinate.longitude * 100) {
-            centerLocationButton.selected = true
+            centerLocationButton.isSelected = true
         } else {
-            centerLocationButton.selected = false
+            centerLocationButton.isSelected = false
         }
     }
     
-    func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         refreshMapView()
     }
 
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "annoID"
 
         if let annotation = annotation as? MapAnnotation {
             
             let cookingEvent = annotation.cookingEvent
             let profile = cookingEvent!.profile
-            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
             
             
             if annotationView == nil {
                 
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView!.canShowCallout = true
-                annotationView!.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+                annotationView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
 
             } else {
                 
@@ -108,18 +108,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
             if let image = profile?.profileImage as UIImage? {
                 profile?.profileImage = image
             } else {
-                if let url = profile?.profileImageURL as NSURL! {
-                let request = NSMutableURLRequest(URL: url)
-                let session = NSURLSession.sharedSession()
-                let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+                if let url = profile?.profileImageURL as URL! {
+                let session = URLSession.shared
+                let task = session.dataTask(with: url, completionHandler: { (data, response, error) -> Void in
                     if error != nil {
                         print("thers an error in the log")
                     } else {
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             profile?.profileImage = UIImage(data: data!)
                         }
                     }
-                }
+                }) 
                 
                 task.resume()
                 }
@@ -130,28 +129,27 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
                 imageView.image = image
                 imageView.layer.cornerRadius = imageView.frame.size.width / 2
-                imageView.contentMode = .ScaleToFill
+                imageView.contentMode = .scaleToFill
                 annotationView?.leftCalloutAccessoryView = imageView
             } else {
                 print("annotaion has no profile pic")
-                if let url = profile?.profileSmallImageURL as NSURL! {
-                let request = NSMutableURLRequest(URL: url)
-                let session = NSURLSession.sharedSession()
-                let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+                if let url = profile?.profileSmallImageURL as URL! {
+                let session = URLSession.shared
+                let task = session.dataTask(with: url, completionHandler: { (data, response, error) -> Void in
                     if error != nil {
                         print("thers an error in the log")
                     } else {
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             print("profile pic of annotaion loaded")
                             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
                             imageView.image = profile?.smallprofileImage
                             imageView.layer.cornerRadius = imageView.frame.size.width / 2
-                            imageView.contentMode = .ScaleToFill
+                            imageView.contentMode = .scaleToFill
                             annotationView?.leftCalloutAccessoryView = imageView
 
                         }
                     }
-                }
+                }) 
                 task.resume()
                 }
             }
@@ -171,9 +169,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     
     
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
-       let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("cookingOfferDetailVCID") as! CookingOfferDetailViewController
+       let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "cookingOfferDetailVCID") as! CookingOfferDetailViewController
         if let annotation = view.annotation as? MapAnnotation {
  
                 detailVC.cookingEvent = annotation.cookingEvent
@@ -191,11 +189,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     // MARK: - Navigation
     
-    @IBAction func backFromMapFiltersUnwindSegue(segue:UIStoryboardSegue) {
+    @IBAction func backFromMapFiltersUnwindSegue(_ segue:UIStoryboardSegue) {
     }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
 
     }

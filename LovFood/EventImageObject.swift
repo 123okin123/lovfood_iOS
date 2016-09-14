@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 
-public class EventImageObject {
+open class EventImageObject {
 
     let thumbURL :String?
     let fullURL :String?
@@ -32,11 +32,11 @@ public class EventImageObject {
     self.fullStrorageURI = fullStrorageURI
     }
     init(snapshot: FIRDataSnapshot) {
-        self.thumbURL = snapshot.value?["thumb_url"] as? String
-        self.fullURL = snapshot.value?["full_url"] as? String
+        self.thumbURL = (snapshot.value as! NSDictionary)["thumb_url"] as? String
+        self.fullURL = (snapshot.value as! NSDictionary)["full_url"] as? String
         self.imageID = snapshot.key
-        self.thumbStorageURI = snapshot.value?["thumb_Storage_uri"] as? String
-        self.fullStrorageURI = snapshot.value?["full_Storage_uri"] as? String
+        self.thumbStorageURI = (snapshot.value as! NSDictionary)["thumb_Storage_uri"] as? String
+        self.fullStrorageURI = (snapshot.value as! NSDictionary)["full_Storage_uri"] as? String
     }
 
 

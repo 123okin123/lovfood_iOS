@@ -14,8 +14,8 @@ import MapKit
 
 
 
-public var screenwidth = UIScreen.mainScreen().bounds.size.width
-public var screenheight = UIScreen.mainScreen().bounds.size.height
+public var screenwidth = UIScreen.main.bounds.size.width
+public var screenheight = UIScreen.main.bounds.size.height
 public var lovFoodColor = UIColor(red: 237/255, green: 52/255, blue: 81/255, alpha: 1)
 public var lovFoodSecondaryColor = UIColor(red: 249/255, green: 247/255, blue: 244/255, alpha: 1)
 
@@ -31,7 +31,7 @@ public let cookingEventsByOccasionDBRef = dataBaseRef.child("cookingEventsByOcca
 public var filter = Filter()
 
 public let storage = FIRStorage.storage()
-public let storageRef = storage.referenceForURL("gs://lovfood-1328.appspot.com")
+public let storageRef = storage.reference(forURL: "gs://lovfood-1328.appspot.com")
 
 public var currentUserLocation :CLLocation?
 public var userCookingProfile :CookingProfile!

@@ -13,7 +13,7 @@ class WeAreUpdatingLocationViewController: UIViewController, CLLocationManagerDe
 
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var locationManager = (UIApplication.sharedApplication().delegate as! AppDelegate).locationManager
+    var locationManager = (UIApplication.shared.delegate as! AppDelegate).locationManager
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,19 +28,19 @@ class WeAreUpdatingLocationViewController: UIViewController, CLLocationManagerDe
         // Dispose of any resources that can be recreated.
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if !(locations.isEmpty) {
             currentUserLocation = locations.last!
             if let tabBarC = presentingViewController as? TabBarController {
                 if let collectionVC = tabBarC.viewControllers![0] as? CollectionViewController {
                     
-                    presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                    presentingViewController?.dismiss(animated: true, completion: nil)
                 }
             }
             
         }
     }
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error)
         locationManager.requestLocation()
     }

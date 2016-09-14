@@ -9,7 +9,7 @@
 import Foundation
 
 
-public class Filter {
+open class Filter {
 
     var cookingOccasion :Occasion?
 

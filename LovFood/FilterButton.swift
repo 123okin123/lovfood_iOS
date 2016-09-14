@@ -19,14 +19,14 @@ class FilterButton: UIButton {
     
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // Drawing code
         customImageView.frame.origin = CGPoint(x: (self.bounds.size.width / 2) - 30, y: 0)
         customImageView.frame.size = CGSize(width: 60, height: 60)
         customImageView.image = image
         self.addSubview(customImageView)
         
-        if self.selected {
+        if self.isSelected {
         customImageView.image = selectedImage
         }
     }

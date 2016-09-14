@@ -18,13 +18,13 @@ private let reuseIdentifier = "cookingOfferCellID"
 class CollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, CLLocationManagerDelegate  {
     
 
-    var todayDate = NSDate()
+    var todayDate = Date()
  
-    var locationManager = (UIApplication.sharedApplication().delegate as! AppDelegate).locationManager
+    var locationManager = (UIApplication.shared.delegate as! AppDelegate).locationManager
 
     
     
-    var timer = NSTimer.init()
+    var timer = Timer.init()
 
 
 
@@ -45,22 +45,22 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkLocationService()
         updateUI()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(CollectionViewController.updateUI), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(CollectionViewController.updateUI), userInfo: nil, repeats: true)
 
         print(cookingEventsArrays)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("CollectionVCviewDidDisappear")
         
@@ -73,7 +73,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 
     
     func checkLocationService() {
-        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             if let retrievedUserLocation = locationManager.location  {
                 currentUserLocation = retrievedUserLocation
                 print("location Service allowed, and location \(currentUserLocation) available")
@@ -81,16 +81,16 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                 
                 print("location Service allowed, but no location available")
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let weAreUpdationLocationVC = storyboard.instantiateViewControllerWithIdentifier("weAreUpdationLocationVCID")
-                self.presentViewController(weAreUpdationLocationVC, animated: true, completion: nil)
+                let weAreUpdationLocationVC = storyboard.instantiateViewController(withIdentifier: "weAreUpdationLocationVCID")
+                self.present(weAreUpdationLocationVC, animated: true, completion: nil)
                 
             }
             
         } else {
             print("location Service not allowed")
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let weNeedYourLocationVC = storyboard.instantiateViewControllerWithIdentifier("weNeedYourLocationVCID")
-            self.presentViewController(weNeedYourLocationVC, animated: true, completion: nil)
+            let weNeedYourLocationVC = storyboard.instantiateViewController(withIdentifier: "weNeedYourLocationVCID")
+            self.present(weNeedYourLocationVC, animated: true, completion: nil)
             
         }
     }
@@ -102,19 +102,19 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     
     
     // MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showDetailVCSegueID" {
-        if let cookingOfferDetailVC = segue.destinationViewController as? CookingOfferDetailViewController {
+        if let cookingOfferDetailVC = segue.destination as? CookingOfferDetailViewController {
             if let cell = sender as? UICollectionViewCell {
-                let indexPath = collectionView!.indexPathForCell(cell)!
-                cookingOfferDetailVC.cookingEvent = cookingEventsArrays[indexPath.section][indexPath.row]
+                let indexPath = collectionView!.indexPath(for: cell)!
+                cookingOfferDetailVC.cookingEvent = cookingEventsArrays[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
             }
         }
         }
         
         if segue.identifier == "showFiltersSegueID" {
-            if let navVC = segue.destinationViewController as? UINavigationController {
+            if let navVC = segue.destination as? UINavigationController {
                 if let filterVC = navVC.viewControllers[0] as? FilterTableViewController {
                 
                 }
@@ -125,10 +125,10 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         
     }
     
-    @IBAction func backFromMapUnwindSegue(segue:UIStoryboardSegue) {
+    @IBAction func backFromMapUnwindSegue(_ segue:UIStoryboardSegue) {
     }
     
-    @IBAction func backFromFiltersUnwindSegue(segue:UIStoryboardSegue) {
+    @IBAction func backFromFiltersUnwindSegue(_ segue:UIStoryboardSegue) {
 
        
         /*
@@ -164,11 +164,11 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
     }
     
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: screenwidth - 10, height: 130)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
@@ -180,21 +180,21 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 
 
     
-    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "collectionHeaderID", forIndexPath: indexPath) as! HeaderCollectionReusableView
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "collectionHeaderID", for: indexPath) as! HeaderCollectionReusableView
         
         if !(cookingEventsArrays.isEmpty) {
-        if !(cookingEventsArrays[indexPath.section].isEmpty) {
-            let firstCookingEvent = cookingEventsArrays[indexPath.section][0]
-            let dateFormater = NSDateFormatter()
-            dateFormater.dateStyle = .ShortStyle
-            dateFormater.timeStyle = .NoStyle
-            if let date = firstCookingEvent.eventDate as NSDate! {
-            let dateString = dateFormater.stringFromDate(date)
+        if !(cookingEventsArrays[(indexPath as NSIndexPath).section].isEmpty) {
+            let firstCookingEvent = cookingEventsArrays[(indexPath as NSIndexPath).section][0]
+            let dateFormater = DateFormatter()
+            dateFormater.dateStyle = .short
+            dateFormater.timeStyle = .none
+            if let date = firstCookingEvent.eventDate as Date! {
+            let dateString = dateFormater.string(from: date)
             switch dateString {
-            case dateFormater.stringFromDate(todayDate): headerView.label.text = "Today"
-            case dateFormater.stringFromDate(todayDate.dateByAddingTimeInterval(60*60*24)): headerView.label.text = "Tomorrow"
+            case dateFormater.string(from: todayDate): headerView.label.text = "Today"
+            case dateFormater.string(from: todayDate.addingTimeInterval(60*60*24)): headerView.label.text = "Tomorrow"
             default:
                 headerView.label.text = dateString
             }
@@ -207,7 +207,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if cookingEventsArrays[section].isEmpty {
         return CGSize(width: 0, height: 0)
         } else {
@@ -217,18 +217,18 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         
     }
     
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return cookingEventsArrays.count
     }
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cookingEventsArrays[section].count
     }
 
-    override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
      
-        if  indexPath.section == (cookingEventsArrays.endIndex - 1) {
+        if  (indexPath as NSIndexPath).section == (cookingEventsArrays.endIndex - 1) {
             print("reached endsection \(cookingEventsArrays.endIndex - 1)")
  
         }
@@ -237,9 +237,9 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
  
 
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CookingOfferCell
-        let cookingEvent = cookingEventsArrays[indexPath.section][indexPath.row]
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CookingOfferCell
+        let cookingEvent = cookingEventsArrays[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row]
         
        
         cell.cookingOfferTitle.text = cookingEvent.title
@@ -252,12 +252,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         if let occasion = cookingEvent.occasion {
         switch occasion {
         case .CandleLightDinner:
-            cell.candelLightDinnerIndicator.hidden = false
+            cell.candelLightDinnerIndicator.isHidden = false
             cell.candelLightDinnerIndicator.image = UIImage(named: "heart")
         case .CookingTogether:
-            cell.candelLightDinnerIndicator.hidden = true
+            cell.candelLightDinnerIndicator.isHidden = true
         case .CommercialDining:
-            cell.candelLightDinnerIndicator.hidden = false
+            cell.candelLightDinnerIndicator.isHidden = false
             cell.candelLightDinnerIndicator.image = UIImage(named: "restaurant")
         }
         }
@@ -272,14 +272,12 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         } else {
             
             if let profileImageURL = profile.profileImageURL {
-              
-                let request = NSMutableURLRequest(URL: profileImageURL)
-                let session = NSURLSession.sharedSession()
-                let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+                let session = URLSession.shared
+                let task = session.dataTask(with: profileImageURL, completionHandler: { (data, response, error) -> Void in
                     if error != nil {
                         print("thers an error in the log")
                     } else {
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             profile.profileImage = UIImage(data: data!)
                             cell.profileImage.image = profile.profileImage
                         
@@ -287,7 +285,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
                         }
                         
                     }
-                }
+                }) 
                 task.resume()
             } else {
                 profile.profileImage = nil
@@ -297,33 +295,32 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
 
         if  profile.smallprofileImage == nil {
             if let profileSmallImageURL = profile.profileSmallImageURL {
-            let request = NSMutableURLRequest(URL: profileSmallImageURL)
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithRequest(request) { (data, response, error) -> Void in
+            let session = URLSession.shared
+            let task = session.dataTask(with: profileSmallImageURL, completionHandler: { (data, response, error) -> Void in
                 if error != nil {
                     print("thers an error in the log")
                 } else {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         profile.smallprofileImage = UIImage(data: data!)
                     }
                 }
-            }
+            }) 
             task.resume()
             }
         }
         }
         
         // END OF: Check if cookingEvent has profile and load profileImage
-        if let image = cookingEventsArrays[indexPath.section][indexPath.row].image {
+        if let image = cookingEventsArrays[(indexPath as NSIndexPath).section][(indexPath as NSIndexPath).row].image {
             
             cell.cookingOfferImageView.image = image
         } else {
             
             if let imageURL = cookingEvent.imageURL {
                 print("ping3")
-                cell.cookingOfferImageView.setImageWithURL(imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
+                cell.cookingOfferImageView.setImage(withUrl: imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
                     cookingEventsArrays[indexPath.section][indexPath.row].image = instance?.image
-                    cell.cookingOfferImageView.layer.addAnimation(CATransition(), forKey: nil)
+                    cell.cookingOfferImageView.layer.add(CATransition(), forKey: nil)
                 })
 
             
@@ -332,7 +329,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
      
         
         
-        cell.tag = indexPath.row
+        cell.tag = (indexPath as NSIndexPath).row
         return cell
     }
     

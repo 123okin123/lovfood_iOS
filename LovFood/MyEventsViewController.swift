@@ -32,7 +32,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
    
     }
@@ -43,27 +43,27 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     func addDatabaseObserver() {
-        let query = cookingEventsDBRef.queryOrderedByChild("userId").queryEqualToValue(user.uid)
-        query.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+        let query = cookingEventsDBRef.queryOrdered(byChild: "userId").queryEqual(toValue: user.uid)
+        query.observe(.childAdded, with: { (snapshot) in
         let cookingEvent = CookingEvent(snapshot: snapshot)
         cookingEvent.profile = userCookingProfile!
         self.cookingEvents.append(cookingEvent)
         
-        let index = self.cookingEvents.indexOf{$0.eventId == cookingEvent.eventId}
-        self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+        let index = self.cookingEvents.index{$0.eventId == cookingEvent.eventId}
+        self.collectionView?.insertItems(at: [IndexPath(item: index!, section: 0)])
         })
-        query.observeEventType(.ChildRemoved, withBlock: { (snapshot) in
+        query.observe(.childRemoved, with: { (snapshot) in
             let cookingEvent = CookingEvent(snapshot: snapshot)
-            let index = self.cookingEvents.indexOf{$0.eventId == cookingEvent.eventId}
-            self.cookingEvents.removeAtIndex(index!)
-            self.collectionView?.deleteItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+            let index = self.cookingEvents.index{$0.eventId == cookingEvent.eventId}
+            self.cookingEvents.remove(at: index!)
+            self.collectionView?.deleteItems(at: [IndexPath(item: index!, section: 0)])
         })
-        query.observeEventType(.ChildChanged, withBlock: { (snapshot) in
+        query.observe(.childChanged, with: { (snapshot) in
             let cookingEvent = CookingEvent(snapshot: snapshot)
-            let index = self.cookingEvents.indexOf{$0.eventId == cookingEvent.eventId}
-            self.cookingEvents.removeAtIndex(index!)
-            self.cookingEvents.insert(cookingEvent, atIndex: index!)
-            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+            let index = self.cookingEvents.index{$0.eventId == cookingEvent.eventId}
+            self.cookingEvents.remove(at: index!)
+            self.cookingEvents.insert(cookingEvent, at: index!)
+            self.collectionView?.reloadItems(at: [IndexPath(item: index!, section: 0)])
         })
         
     }
@@ -80,33 +80,33 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return cookingEvents.count
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! MyEventCell
-        let cookingEvent = cookingEvents[indexPath.row]
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MyEventCell
+        let cookingEvent = cookingEvents[(indexPath as NSIndexPath).row]
   
 
         cell.cookingEventTitleLabel.text = cookingEvent.title
         cell.cookingEventDateLabel.text = convertNSDateToString(cookingEvent.eventDate)
-        cell.tag = indexPath.row
+        cell.tag = (indexPath as NSIndexPath).row
         
-        if let image = cookingEvents[indexPath.row].image {
+        if let image = cookingEvents[(indexPath as NSIndexPath).row].image {
             cell.cookingEventImageView.image = image
         } else {
             if let imageURL = cookingEvent.imageURL {
-                cell.cookingEventImageView.setImageWithURL(imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
+                cell.cookingEventImageView.setImage(withUrl: imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
                     self.cookingEvents[indexPath.row].image = instance?.image
-                    cell.cookingEventImageView.layer.addAnimation(CATransition(), forKey: nil)
+                    cell.cookingEventImageView.layer.add(CATransition(), forKey: nil)
                 })
                 
                 
@@ -118,28 +118,28 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: screenwidth - 20, height: 200)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 20
     }
     
     
     
-    @IBAction func canceledFromCreateEventUnwindSegue(segue:UIStoryboardSegue) {
+    @IBAction func canceledFromCreateEventUnwindSegue(_ segue:UIStoryboardSegue) {
         
     }
     
     
-    @IBAction func savedFromCreateEventUnwindSegue(segue:UIStoryboardSegue) {
+    @IBAction func savedFromCreateEventUnwindSegue(_ segue:UIStoryboardSegue) {
       
-        let createEventVC = segue.sourceViewController as! CreateEventViewController
+        let createEventVC = segue.source as! CreateEventViewController
         let cookingEvent = createEventVC.cookingEvent
  
   
@@ -165,7 +165,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
             ],
             "occasion" : cookingEvent.occasion!.rawValue,
             "price" : 10,
-            "imageURL" : String(cookingEvent.imageURL!)
+            "imageURL" : String(describing: cookingEvent.imageURL!)
         ]
         cookingEventRef.setValue(cookingEventDictionary)
         dataBaseRef.child("cookingEventsByDate")
@@ -180,7 +180,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
             .child((userCookingProfile?.gender?.rawValue)!)
             .child(cookingEventRef.key)
             .setValue(true)
-        geoFire.setLocation(currentUserLocation, forKey: cookingEventRef.key)
+        geoFire?.setLocation(currentUserLocation, forKey: cookingEventRef.key)
         
 
         
@@ -191,8 +191,8 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
 
     // MARK: UICollectionViewDelegate
 
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cookingEvent = cookingEvents[indexPath.row]
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cookingEvent = cookingEvents[(indexPath as NSIndexPath).row]
         cookingEventsDBRef.child(cookingEvent.eventId!).removeValue()
         cookingEventsByDateDBRef.child(convertNSDateToString(cookingEvent.eventDate!)!).child(cookingEvent.eventId!).removeValue()
         cookingEventsByHostGenderDBRef.child(userCookingProfile!.gender!.rawValue).child(cookingEvent.eventId!).removeValue()
@@ -232,7 +232,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
     }
     */
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         /*
         if segue.identifier == "showDetailVCFromMyEventsSegueID" {
             if let cookingOfferDetailVC = segue.destinationViewController as? CookingOfferDetailViewController {

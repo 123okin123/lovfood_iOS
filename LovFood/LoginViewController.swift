@@ -17,10 +17,10 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var appIconCenterYAlignmentConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var fbLoginButton: UIButton! {didSet{
-        fbLoginButton.layer.borderColor = UIColor.whiteColor().CGColor
+        fbLoginButton.layer.borderColor = UIColor.white.cgColor
         fbLoginButton.layer.borderWidth = 1
         fbLoginButton.layer.cornerRadius = 5
-        fbLoginButton.tintColor = UIColor.clearColor()
+        fbLoginButton.tintColor = UIColor.clear
         }}
     
 
@@ -29,14 +29,14 @@ class LoginViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         appIconCenterYAlignmentConstraint.constant = -150
-        UIView.animateWithDuration(0.5, animations: {
+        UIView.animate(withDuration: 0.5, animations: {
             self.view.layoutIfNeeded()
             }, completion: { (bool) in
-                UIView.animateWithDuration(0.5, animations: {
-                    self.fbLoginButton.tintColor = UIColor.whiteColor()
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.fbLoginButton.tintColor = UIColor.white
                 })
         })
     }
@@ -47,25 +47,25 @@ class LoginViewController: UIViewController {
     }
     
     
-    @IBAction func FBloginButtonpressed(sender: UIButton) {
+    @IBAction func FBloginButtonpressed(_ sender: UIButton) {
         // GET FB CREDETIALS
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
-        loginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], fromViewController: self, handler: {
+        loginManager.logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self, handler: {
             (result, error) in
             if let error = error {
                 print(error.localizedDescription)
                 return
-            } else if (result.isCancelled) {
+            } else if (result?.isCancelled)! {
                 print("Cancelled")
                 return
             } else {
                 print("Logged in")
                 // USE FB CREDETIALS TO LOGIN TO FIR
-                let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
+                let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 
                 
-                    FIRAuth.auth()?.signInWithCredential(credential) { (userToLogIn, error) in
+                    FIRAuth.auth()?.signIn(with: credential) { (userToLogIn, error) in
                     
                     if let error = error {
                         print(error.localizedDescription)
@@ -73,23 +73,23 @@ class LoginViewController: UIViewController {
                     } else {
                         user = userToLogIn
                        
-                        FBSDKGraphRequest.init(graphPath: "me?fields=first_name,last_name,picture.width(640),gender", parameters: nil).startWithCompletionHandler({
+                        FBSDKGraphRequest.init(graphPath: "me?fields=first_name,last_name,picture.width(640),gender", parameters: nil).start(completionHandler: {
                         (connection, result, error) in
                             if let error = error {
                             print(error.localizedDescription)
                             } else {
                             print(result)
-
+                                let profileImageURL = (((result as! NSDictionary)["picture"]as! NSDictionary)["data"]as! NSDictionary)["url"] as! String
                                 dataBaseRef.child("users").child(user!.uid).setValue([
                                     "username" : user!.displayName!,
                                     "email" : user!.email!,
                                     "firstname": (result as! NSDictionary)["first_name"]!,
                                     "lastname": (result as! NSDictionary)["last_name"]!,
                                     "profileSmallImageURL": user!.photoURL!.absoluteString,
-                                    "profileImageURL": (result as! NSDictionary)["picture"]!["data"]!!["url"]! as! String,
+                                    "profileImageURL": profileImageURL,
                                     "gender" : (result as! NSDictionary)["gender"]!,
                                     ])
-                                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                                self.presentingViewController?.dismiss(animated: true, completion: nil)
                             }
                             
                         })

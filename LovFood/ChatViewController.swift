@@ -21,7 +21,7 @@ class ChatViewController: JSQMessagesViewController {
     
     let imagePicker = UIImagePickerController()
 
-    private var localTyping = false
+    fileprivate var localTyping = false
     var isTyping: Bool {
         get {
             return localTyping
@@ -45,21 +45,21 @@ class ChatViewController: JSQMessagesViewController {
         setupBubbles()
         setupAvatarImages()
        // collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         messageRef = dataBaseRef.child("messages")
 
     }
 
 
     
-    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!,
-                                     senderDisplayName: String!, date: NSDate!) {
+    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!,
+                                     senderDisplayName: String!, date: Date!) {
 
         
         //CONVERT FROM NSDate to String
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.stringFromDate(date)
+        let dateString = dateFormatter.string(from: date)
         //SAVE MESSAGE IN DATABASE
         let itemRef = messageRef.childByAutoId()
         let messageItem = [ // 2
@@ -74,38 +74,38 @@ class ChatViewController: JSQMessagesViewController {
         finishSendingMessage()
         isTyping = false
     }
-    override func didPressAccessoryButton(sender: UIButton) {
+    override func didPressAccessoryButton(_ sender: UIButton) {
         self.inputToolbar.contentView!.textView!.resignFirstResponder()
         
-        let sheet = UIAlertController(title: "Media messages", message: nil, preferredStyle: .ActionSheet)
+        let sheet = UIAlertController(title: "Media messages", message: nil, preferredStyle: .actionSheet)
         
-        let photoAction = UIAlertAction(title: "Send photo", style: .Default) { (action) in
+        let photoAction = UIAlertAction(title: "Send photo", style: .default) { (action) in
 
         }
         
-        let locationAction = UIAlertAction(title: "Send location", style: .Default) { (action) in
+        let locationAction = UIAlertAction(title: "Send location", style: .default) { (action) in
 
         }
         
-        let videoAction = UIAlertAction(title: "Send video", style: .Default) { (action) in
+        let videoAction = UIAlertAction(title: "Send video", style: .default) { (action) in
  
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         sheet.addAction(photoAction)
         sheet.addAction(locationAction)
         sheet.addAction(videoAction)
         sheet.addAction(cancelAction)
         
-        self.presentViewController(sheet, animated: true, completion: nil)
+        self.present(sheet, animated: true, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         finishReceivingMessage()
         observeMessages()
@@ -115,31 +115,31 @@ class ChatViewController: JSQMessagesViewController {
 
     
     
-    func addMessage(id: String, date: NSDate, text: String) {
+    func addMessage(_ id: String, date: Date, text: String) {
         let message = JSQMessage(senderId: id, senderDisplayName: self.senderDisplayName, date: date, text: text)
-        messages.append(message)
+        messages.append(message!)
     }
-    func addMedia(media:JSQMediaItem) {
+    func addMedia(_ media:JSQMediaItem) {
         let message = JSQMessage(senderId: self.senderId, displayName: self.senderDisplayName, media: media)
-        self.messages.append(message)
-        self.finishSendingMessageAnimated(true)
+        self.messages.append(message!)
+        self.finishSendingMessage(animated: true)
     }
  
     
 
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
     
-    override func collectionView(collectionView: UICollectionView,
+    override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
         if message.senderId == senderId { // 2
             return outgoingBubbleImageView
@@ -148,8 +148,8 @@ class ChatViewController: JSQMessagesViewController {
         }
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         let message = messages[indexPath.item] // 1
         if message.senderId == senderId { // 2
             return nil
@@ -158,58 +158,58 @@ class ChatViewController: JSQMessagesViewController {
         }
     }
 
-    override func collectionView(collectionView: UICollectionView,
-                                 cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
             as! JSQMessagesCollectionViewCell
         
-        let message = messages[indexPath.item]
+        let message = messages[(indexPath as NSIndexPath).item]
         
         if message.senderId == senderId {
-            cell.textView!.textColor = UIColor.whiteColor()
+            cell.textView!.textColor = UIColor.white
         } else {
-            cell.textView!.textColor = UIColor.blackColor()
+            cell.textView!.textColor = UIColor.black
         }
         
         return cell
     }
     
-    private func setupBubbles() {
+    fileprivate func setupBubbles() {
         let factory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageView = factory.outgoingMessagesBubbleImageWithColor(lovFoodColor)
-        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(
-            UIColor.jsq_messageBubbleLightGrayColor())
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(with: lovFoodColor)
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
+            with: UIColor.jsq_messageBubbleLightGray())
     }
-    private func setupAvatarImages() {
-         incomingAvatarImageView = JSQMessagesAvatarImageFactory.avatarImageWithImage(UIImage(named: "lisa_small"), diameter: 30)
+    fileprivate func setupAvatarImages() {
+         incomingAvatarImageView = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "lisa_small"), diameter: 30)
 
     }
     
-    private func observeMessages() {
-        let messagesQuery = messageRef.queryLimitedToLast(25)
+    fileprivate func observeMessages() {
+        let messagesQuery = messageRef.queryLimited(toLast: 25)
     
-        messagesQuery.observeEventType(.ChildAdded) { (snapshot: FIRDataSnapshot!) in
+        messagesQuery.observe(.childAdded) { (snapshot: FIRDataSnapshot!) in
 
-            let id = snapshot.value!["senderId"] as! String
-            let text = snapshot.value!["text"] as! String
-            let dateString = snapshot.value!["date"] as! String
+            let id = (snapshot.value as! NSDictionary)["senderId"] as! String
+            let text = (snapshot.value as! NSDictionary)["text"] as! String
+            let dateString = (snapshot.value as! NSDictionary)["date"] as! String
             
             //CONVERT String to NSDate
-             let dateFormatter = NSDateFormatter()
+             let dateFormatter = DateFormatter()
              dateFormatter.dateFormat = "yyyy-MM-dd"
-             let date = dateFormatter.dateFromString(dateString)!
+             let date = dateFormatter.date(from: dateString)!
             self.addMessage(id, date: date, text: text)
             
             self.finishReceivingMessage()
         }
     }
     
-    private func observeTyping() {
+    fileprivate func observeTyping() {
         let typingIndicatorRef = dataBaseRef.child("typingIndicator")
         userIsTypingRef = typingIndicatorRef.child(senderId)
         userIsTypingRef.onDisconnectRemoveValue()
-        usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqualToValue(true)
-        usersTypingQuery.observeEventType(.Value) { (data: FIRDataSnapshot!) in
+        usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqual(toValue: true)
+        usersTypingQuery.observe(.value) { (data: FIRDataSnapshot!) in
             
             // 3 You're the only typing, don't show the indicator
             if data.childrenCount == 1 && self.isTyping {
@@ -218,11 +218,11 @@ class ChatViewController: JSQMessagesViewController {
             
             // 4 Are there others typing?
             self.showTypingIndicator = data.childrenCount > 0
-            self.scrollToBottomAnimated(true)
+            self.scrollToBottom(animated: true)
         }
         
     }
-    override func textViewDidChange(textView: UITextView) {
+    override func textViewDidChange(_ textView: UITextView) {
         super.textViewDidChange(textView)
         // If the text is not empty, the user is typing
         print(textView.text != "")

@@ -21,9 +21,9 @@ class MyEventCell: UICollectionViewCell {
         cellContentView.layer.masksToBounds = true
 
         
-        layer.shadowColor = UIColor.grayColor().CGColor
+        layer.shadowColor = UIColor.gray.cgColor
         layer.shadowOpacity = 0.4
-        layer.shadowOffset = CGSizeZero
+        layer.shadowOffset = CGSize.zero
         layer.shadowRadius = 5
     }
     

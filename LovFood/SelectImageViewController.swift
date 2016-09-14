@@ -36,12 +36,12 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addDatabaseObserver()
        
     }
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         dbQuery.removeAllObservers()
     }
@@ -50,24 +50,24 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
 
     func addDatabaseObserver() {
         
-        dbQuery.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+        dbQuery.observe(.childAdded, with: { (snapshot) in
             let eventImageObject = EventImageObject(snapshot: snapshot)
             self.images.append(eventImageObject)
-            let index = self.images.indexOf{$0.imageID == eventImageObject.imageID}
-            self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+            let index = self.images.index{$0.imageID == eventImageObject.imageID}
+            self.collectionView?.insertItems(at: [IndexPath(item: index!, section: 0)])
         })
-        dbQuery.observeEventType(.ChildRemoved, withBlock: { (snapshot) in
+        dbQuery.observe(.childRemoved, with: { (snapshot) in
             let eventImageObject = EventImageObject(snapshot: snapshot)
-            let index = self.images.indexOf{$0.imageID == eventImageObject.imageID}
-            self.images.removeAtIndex(index!)
-            self.collectionView?.deleteItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+            let index = self.images.index{$0.imageID == eventImageObject.imageID}
+            self.images.remove(at: index!)
+            self.collectionView?.deleteItems(at: [IndexPath(item: index!, section: 0)])
         })
-        dbQuery.observeEventType(.ChildChanged, withBlock: { (snapshot) in
+        dbQuery.observe(.childChanged, with: { (snapshot) in
             let eventImageObject = EventImageObject(snapshot: snapshot)
-            let index = self.images.indexOf{$0.imageID == eventImageObject.imageID}
-            self.images.removeAtIndex(index!)
-            self.images.insert(eventImageObject, atIndex: index!)
-            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forItem: index!, inSection: 0)])
+            let index = self.images.index{$0.imageID == eventImageObject.imageID}
+            self.images.remove(at: index!)
+            self.images.insert(eventImageObject, at: index!)
+            self.collectionView?.reloadItems(at: [IndexPath(item: index!, section: 0)])
         })
         
     }
@@ -76,11 +76,11 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "backFromSelectImageSegueID" {
             if let cell = sender as? UICollectionViewCell {
-                if let indexPath = collectionView?.indexPathForCell(cell) {
-                selectedImage = images[indexPath.row]
+                if let indexPath = collectionView?.indexPath(for: cell) {
+                selectedImage = images[(indexPath as NSIndexPath).row]
                 }
             
             }
@@ -92,21 +92,21 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return images.count
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! SelectImageCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! SelectImageCell
         if cell.imageView.image == nil {
-        storageRef.child("eventImages/thumb/\(images[indexPath.row].imageID!)").dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
+        storageRef.child("eventImages/thumb/\(images[(indexPath as NSIndexPath).row].imageID!)").data(withMaxSize: 1 * 1024 * 1024) { (data, error) -> Void in
             if (error != nil) {
                 // Uh-oh, an error occurred!
                 print(error)
@@ -115,30 +115,30 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
                 // Data for "images/island.jpg" is returned
                 let image: UIImage! = UIImage(data: data!)
                 cell.imageView.image = image
-                self.images[indexPath.row].thumbImage = image
+                self.images[(indexPath as NSIndexPath).row].thumbImage = image
                 
             }
         }
         }
-        cell.tag = indexPath.row
+        cell.tag = (indexPath as NSIndexPath).row
         return cell
     }
     
     
     // MARK: UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: ((screenwidth - 4)/3), height: (screenwidth - 4)/3)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 2
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 2
     }
    

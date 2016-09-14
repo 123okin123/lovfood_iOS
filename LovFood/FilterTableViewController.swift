@@ -21,51 +21,51 @@ class FilterTableViewController: UITableViewController {
     @IBOutlet weak var cookingtogetherButton: FilterButton!
     
     
-    @IBAction func filterButtonPressed(sender: UIButton) {
+    @IBAction func filterButtonPressed(_ sender: UIButton) {
         switch sender.tag {
 
         case 0:
-            if !sender.selected {
+            if !sender.isSelected {
                 filter.gender = .Female
-                sender.selected = true
-                maleButton.selected = false
+                sender.isSelected = true
+                maleButton.isSelected = false
             } else {
                 filter.gender = .None
-                sender.selected = false
+                sender.isSelected = false
             }
         case 1:
-            if !sender.selected {
+            if !sender.isSelected {
                 filter.gender = .Male
-                sender.selected = true
-                femaleButton.selected = false
+                sender.isSelected = true
+                femaleButton.isSelected = false
             } else {
                 filter.gender = .None
-                sender.selected = false
+                sender.isSelected = false
             }
         case 2:
-            if !sender.selected {
+            if !sender.isSelected {
                 filter.cookingOccasion = .CandleLightDinner
-                sender.selected = true
-                cookingtogetherButton.selected = false
+                sender.isSelected = true
+                cookingtogetherButton.isSelected = false
             } else {
                 filter.cookingOccasion = nil
-                sender.selected = false
+                sender.isSelected = false
             }
         case 3:
-            if !sender.selected {
+            if !sender.isSelected {
                 filter.cookingOccasion = .CookingTogether
-                sender.selected = true
-                candlelightdinnerButton.selected = false
+                sender.isSelected = true
+                candlelightdinnerButton.isSelected = false
             } else {
                 filter.cookingOccasion = nil
-                sender.selected = false
+                sender.isSelected = false
             }
 
         default:
-            if !sender.selected {
-                sender.selected = true
+            if !sender.isSelected {
+                sender.isSelected = true
             } else {
-                sender.selected = false
+                sender.isSelected = false
             }
 
         }
@@ -83,23 +83,23 @@ class FilterTableViewController: UITableViewController {
       print(filter.gender)
         
         if filter.gender == .Female {
-            femaleButton.selected = true
+            femaleButton.isSelected = true
         }
         if filter.gender == .Male {
-            maleButton.selected = true
+            maleButton.isSelected = true
         }
         
         if filter.cookingOccasion != nil {
             if filter.cookingOccasion! == .CandleLightDinner {
-                candlelightdinnerButton.selected = true
+                candlelightdinnerButton.isSelected = true
             }
             if filter.cookingOccasion! == .CookingTogether {
-                cookingtogetherButton.selected = true
+                cookingtogetherButton.isSelected = true
             }
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print(filter.gender)
         
@@ -112,12 +112,12 @@ class FilterTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 2
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 1
     }

@@ -35,7 +35,7 @@ class TabBarController: UITabBarController {
     }
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         print("tabVCviewWillAppear")
@@ -43,17 +43,17 @@ class TabBarController: UITabBarController {
         
         
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("tabVCviewDidApppear")
-        locationQuery = geoFire.queryAtLocation(currentUserLocation, withRadius: 10.0)
+        locationQuery = (geoFire?.query(at: currentUserLocation, withRadius: 10.0))!
         for i in 0...13{
             addDBObserverFor(i)
         }
     
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("tabVCviewWillDisappear")
 
@@ -70,17 +70,17 @@ class TabBarController: UITabBarController {
     
 
     
-    func addDBObserverFor(dayIndex :Int) {
-        let date = NSDate().dateByAddingTimeInterval((60*60*(24))*Double(dayIndex))
+    func addDBObserverFor(_ dayIndex :Int) {
+        let date = Date().addingTimeInterval((60*60*(24))*Double(dayIndex))
   
         // Get all CookingEventIDs Nearby
-        locationQuery.observeEventType(.KeyEntered, withBlock: { (key: String!, location: CLLocation!) in
+        locationQuery.observe(.keyEntered, with: { (key: String?, location: CLLocation?) in
        
             // Check if CookingEventID is in cookingEventsByDateDB
                 cookingEventsByDateDBRef
                 .child(convertNSDateToString(date)!)
-                .child(key)
-                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                .child(key!)
+                .observeSingleEvent(of: .value, with: { (snapshot) in
                     if let _ = snapshot.value as? NSNumber {
                         
                         self.filterGender(snapshot.key) {
@@ -88,19 +88,19 @@ class TabBarController: UITabBarController {
                             // Get CookingEvent
                             cookingEventsDBRef
                                 .child(snapshot.key)
-                                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                                .observeSingleEvent(of: .value, with: { (snapshot) in
                                     if snapshot.value != nil {
                                         let cookingEvent = CookingEvent(snapshot: snapshot)
                                         
                                         //Get User of CookingEvent
                                         if let userId = cookingEvent.userId {
                                             usersDBRef.child(userId)
-                                                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                                                .observeSingleEvent(of: .value, with: { (snapshot) in
                                                     let profile = CookingProfile(snapshot: snapshot)
                                                     cookingEvent.profile = profile
                                                     
                                                     // Add CookingEvent to Array
-                                                    let index = cookingEventsArrays[dayIndex].indexOf { $0.eventId == cookingEvent.eventId}
+                                                    let index = cookingEventsArrays[dayIndex].index { $0.eventId == cookingEvent.eventId}
                                                     if index == nil { cookingEventsArrays[dayIndex].append(cookingEvent) }
                                                     
                                                 })
@@ -115,12 +115,12 @@ class TabBarController: UITabBarController {
             
         })
         
-        locationQuery.observeEventType(.KeyExited, withBlock: { (key: String!, location: CLLocation!) in
+        locationQuery.observe(.keyExited, with: { (key: String?, location: CLLocation?) in
             
-            let index = cookingEventsArrays[dayIndex].indexOf { $0.eventId == key}
+            let index = cookingEventsArrays[dayIndex].index { $0.eventId == key}
             if index != nil {
                 print(index!)
-                cookingEventsArrays[dayIndex].removeAtIndex(index!)
+                cookingEventsArrays[dayIndex].remove(at: index!)
                 
             }
         })
@@ -131,13 +131,13 @@ class TabBarController: UITabBarController {
     }
     
 
-    func filterGender(cookingEventId :String, completion: Void -> Void) {
+    func filterGender(_ cookingEventId :String, completion: @escaping (Void) -> Void) {
         switch filter.gender {
         case .Male:
             cookingEventsByHostGenderDBRef
                 .child("Male")
                 .child(cookingEventId)
-                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                .observeSingleEvent(of: .value, with: { (snapshot) in
                     if let _ = snapshot.value as? NSNumber {
                         completion()
                     }
@@ -146,7 +146,7 @@ class TabBarController: UITabBarController {
             cookingEventsByHostGenderDBRef
                 .child("Female")
                 .child(cookingEventId)
-                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                .observeSingleEvent(of: .value, with: { (snapshot) in
                     if let _ = snapshot.value as? NSNumber {
                         completion()
                     }
@@ -156,13 +156,13 @@ class TabBarController: UITabBarController {
     }
     
   
-    func filterOccasion(cookingEventId :String, completion: Void -> Void) {
+    func filterOccasion(_ cookingEventId :String, completion: @escaping (Void) -> Void) {
         switch filter.cookingOccasion {
         case .CandleLightDinner?:
             cookingEventsByOccasionDBRef
                 .child("CandleLightDinner")
                 .child(cookingEventId)
-                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                .observeSingleEvent(of: .value, with: { (snapshot) in
                     if let _ = snapshot.value as? NSNumber {
                         completion()
                     }
@@ -171,7 +171,7 @@ class TabBarController: UITabBarController {
             cookingEventsByOccasionDBRef
                 .child("CookingTogether")
                 .child(cookingEventId)
-                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                .observeSingleEvent(of: .value, with: { (snapshot) in
                     if let _ = snapshot.value as? NSNumber {
                         completion()
                     }
@@ -180,7 +180,7 @@ class TabBarController: UITabBarController {
             cookingEventsByOccasionDBRef
                 .child("CommercialDining")
                 .child(cookingEventId)
-                .observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                .observeSingleEvent(of: .value, with: { (snapshot) in
                     if let _ = snapshot.value as? NSNumber {
                         completion()
                     }

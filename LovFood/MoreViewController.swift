@@ -13,12 +13,12 @@ class MoreViewController: UITableViewController {
     @IBOutlet weak var profilePictureImageView: UIImageView! {didSet{
         profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.width / 2
         profilePictureImageView.clipsToBounds = true
-        profilePictureImageView.layer.borderColor = UIColor.whiteColor().CGColor
+        profilePictureImageView.layer.borderColor = UIColor.white.cgColor
         profilePictureImageView.layer.borderWidth = 3
         }}
     @IBOutlet weak var profileNameLabel: UILabel!
 
-    @IBAction func signOutButtonPressed(sender: UIButton) {
+    @IBAction func signOutButtonPressed(_ sender: UIButton) {
         try! FIRAuth.auth()?.signOut()
 
     }
@@ -36,7 +36,7 @@ class MoreViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print(userCookingProfile)
     }
