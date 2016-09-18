@@ -95,9 +95,12 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MyEventCell
         let cookingEvent = cookingEvents[(indexPath as NSIndexPath).row]
   
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
 
         cell.cookingEventTitleLabel.text = cookingEvent.title
-        cell.cookingEventDateLabel.text = convertNSDateToString(cookingEvent.eventDate)
+        cell.cookingEventDateLabel.text = dateFormatter.string(for: cookingEvent.eventDate)
         cell.tag = (indexPath as NSIndexPath).row
         
         if let image = cookingEvents[(indexPath as NSIndexPath).row].image {
@@ -105,8 +108,11 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         } else {
             if let imageURL = cookingEvent.imageURL {
                 cell.cookingEventImageView.setImage(withUrl: imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
-                    self.cookingEvents[indexPath.row].image = instance?.image
-                    cell.cookingEventImageView.layer.add(CATransition(), forKey: nil)
+                    if self.cookingEvents.indices.contains(indexPath.row) {
+                        self.cookingEvents[indexPath.row].image = instance?.image
+                        cell.cookingEventImageView.layer.add(CATransition(), forKey: nil)
+
+                    }
                 })
                 
                 
@@ -149,7 +155,29 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         if let location = currentUserLocation {
         lat = location.coordinate.latitude
         long = location.coordinate.longitude
-        }
+        
+        
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+
+            if error != nil {
+                print("Reverse geocoder failed with error" + (error!.localizedDescription))
+                return
+            }
+            
+            if placemarks!.count > 0 {
+                let pm = placemarks![0] 
+                
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy_MM_dd"
+        let date = dateFormatter.string(from: cookingEvent.eventDate!)
+                
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "hh:mm a"
+        let time = timeFormatter.string(from: cookingEvent.eventDate!)
+        
+        
+        
         //for _ in 0...20 {
         // Creat Event
         let cookingEventRef = dataBaseRef.child("cookingEvents").childByAutoId()
@@ -157,19 +185,20 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
             "title" : cookingEvent.title!,
             "description" : cookingEvent.description!,
             "userId" : user!.uid,
-            "eventDate" : convertNSDateToString(cookingEvent.eventDate)!,
-            "eventTime" : convertNSDateTimeToString(cookingEvent.eventDate)!,
+            "eventDate" : date,
+            "eventTime" : time,
             "coordinates" : [
                 "lat": lat,
                 "long": long,
             ],
+            "locationString" : pm.subAdministrativeArea!,
             "occasion" : cookingEvent.occasion!.rawValue,
             "price" : 10,
             "imageURL" : String(describing: cookingEvent.imageURL!)
         ]
         cookingEventRef.setValue(cookingEventDictionary)
         dataBaseRef.child("cookingEventsByDate")
-            .child(convertNSDateToString(cookingEvent.eventDate)!)
+            .child(date)
             .child(cookingEventRef.key)
             .setValue(true)
         dataBaseRef.child("cookingEventsByOccasion")
@@ -185,6 +214,15 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
 
         
 //   }
+                
+                
+            }
+            else {
+                print("Problem with the data received from geocoder")
+            }
+        })
+            
+            }
     }
         
 
@@ -193,8 +231,15 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cookingEvent = cookingEvents[(indexPath as NSIndexPath).row]
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        
+        
         cookingEventsDBRef.child(cookingEvent.eventId!).removeValue()
-        cookingEventsByDateDBRef.child(convertNSDateToString(cookingEvent.eventDate!)!).child(cookingEvent.eventId!).removeValue()
+        cookingEventsByDateDBRef.child(dateFormatter.string(from: (cookingEvent.eventDate!))).child(cookingEvent.eventId!).removeValue()
         cookingEventsByHostGenderDBRef.child(userCookingProfile!.gender!.rawValue).child(cookingEvent.eventId!).removeValue()
         cookingEventsByOccasionDBRef.child(cookingEvent.occasion!.rawValue).child(cookingEvent.eventId!).removeValue()
         geofireRef.child(cookingEvent.eventId!).removeValue()

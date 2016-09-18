@@ -20,6 +20,7 @@ open class CookingEvent {
     var userId :String?
     var eventDate: Date?
     var coordinates: CLLocationCoordinate2D?
+    var locationString: String?
     var image :UIImage?
     var imageURL :URL?
     
@@ -52,16 +53,24 @@ open class CookingEvent {
     self.coordinates = coordinates
     }
     init(snapshot: FIRDataSnapshot) {
+        
+    let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+
+        
     self.title = (snapshot.value as! NSDictionary)["title"] as? String
     self.description = (snapshot.value as! NSDictionary)["description"] as? String
     self.userId = (snapshot.value as! NSDictionary)["userId"] as? String
-    self.eventId = snapshot.key 
-    self.eventDate = convertStringToNSDate((snapshot.value as! NSDictionary)["eventDate"] as? String)
+    self.eventId = snapshot.key
+    let dateString = (snapshot.value as! NSDictionary)["eventDate"] as! String
+    let timeString = (snapshot.value as! NSDictionary)["eventTime"] as! String
+    self.eventDate = dateFormatter.date(from: (dateString + " " + timeString))
     let latitude = ((snapshot.value as! NSDictionary)["coordinates"]as! NSDictionary)["lat"] as? Double
     let longitude = ((snapshot.value as! NSDictionary)["coordinates"] as! NSDictionary)["long"] as? Double
         if latitude != nil && longitude != nil {
             self.coordinates = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
         }
+    self.locationString = (snapshot.value as! NSDictionary)["locationString"] as? String
     if let imageURLString = (snapshot.value as! NSDictionary)["imageURL"] as? String {
             self.imageURL = URL(string: imageURLString)
     }
@@ -80,46 +89,6 @@ open class CookingEvent {
 }
 
 
-
-public func convertStringToNSDate(_ string: String?) -> Date? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy'-'MM'-'dd"
-    var date :Date?
-    if string != nil {
-    date = dateFormatter.date(from: string!)
-    }
-    return date
-}
-
-public func convertNSDateToString(_ date: Date?) -> String? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy'-'MM'-'dd"
-    var string :String?
-    if date != nil {
-    string = dateFormatter.string(from: date!)
-    }
-    return string
-}
-
-public func convertStringToNSDateTime(_ string: String?) -> Date? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm"
-    var date :Date?
-    if string != nil {
-    date = dateFormatter.date(from: string!)
-    }
-    return date
-}
-
-public func convertNSDateTimeToString(_ date: Date?) -> String? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "HH:mm"
-    var string :String?
-    if date != nil {
-    string = dateFormatter.string(from: date!)
-    }
-    return string
-}
 
 
 

@@ -72,13 +72,17 @@ class TabBarController: UITabBarController {
     
     func addDBObserverFor(_ dayIndex :Int) {
         let date = Date().addingTimeInterval((60*60*(24))*Double(dayIndex))
-  
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        dateFormatter.dateFormat = "yyyy_MM_dd"
+        
         // Get all CookingEventIDs Nearby
         locationQuery.observe(.keyEntered, with: { (key: String?, location: CLLocation?) in
-       
+       print(dateFormatter.string(from: date))
             // Check if CookingEventID is in cookingEventsByDateDB
                 cookingEventsByDateDBRef
-                .child(convertNSDateToString(date)!)
+                .child(dateFormatter.string(from: date))
                 .child(key!)
                 .observeSingleEvent(of: .value, with: { (snapshot) in
                     if let _ = snapshot.value as? NSNumber {

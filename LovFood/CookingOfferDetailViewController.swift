@@ -15,9 +15,11 @@ class CookingOfferDetailViewController: UITableViewController {
     var cookingEvent :CookingEvent?
    
     @IBOutlet weak var ytplayerView: YTPlayerView!
+    @IBOutlet weak var ytplayerCell: UITableViewCell!
   
 
     @IBOutlet weak var messageTextField: UITextField!
+    
     @IBOutlet weak var mapRadiusView: UIView! {
         didSet {
         mapRadiusView.layer.cornerRadius = 50
@@ -29,66 +31,84 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     @IBOutlet weak var cookingEventImageView: UIImageView!
     
-    @IBOutlet weak var profileDetailImageView: UIImageView! {didSet {
-        profileDetailImageView.layer.cornerRadius = self.profileDetailImageView.frame.size.width / 2
-        profileDetailImageView.clipsToBounds = true
-        profileDetailImageView.layer.borderColor = UIColor.white.cgColor
-        profileDetailImageView.layer.borderWidth = 3
+    @IBOutlet weak var profileImageView: UIImageView! {didSet {
+        profileImageView.layer.cornerRadius = 75
+        profileImageView.layer.borderColor = UIColor.white.cgColor
+        profileImageView.layer.borderWidth = 3
         }}
+ 
     @IBOutlet weak var cookingOfferTitleLabel: UILabel!
     @IBOutlet weak var cookingOfferDescriptionLabel: UILabel!
     @IBOutlet weak var profileName: UILabel!
     @IBOutlet weak var profileTextLable: UILabel!
     @IBOutlet weak var candleLightDinnerIndicator: UIImageView!
-    @IBOutlet weak var priceLable: UILabel!
-    @IBOutlet weak var priceLabelDescription: UILabel!
+
+    @IBOutlet weak var profileFullNameLabel: UILabel!
     
+    @IBOutlet weak var dateLabel: UILabel!
    
     @IBOutlet weak var cookingTogetherView: UIView!
     @IBOutlet weak var candleLightView: UIView!
+    @IBOutlet weak var canleLightLabel: UILabel!
+    
+
+    
+    
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var locationLabel: UILabel!
+    
+    
+    
     
     @IBAction func sendButtonPressed(_ sender: UIButton) {
         messageTextField.text = ""
         messageTextField.resignFirstResponder()
     }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.delegate = self
         tableView.dataSource = self
-        loadData()
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 240
-        
-        
+        setupCookingEvent()
 
-//        if cookingEvent!.usesVideo {
-      
-            let playerVars = ["playsinline" : 1,
-                              "controls" : 1,
-                              "showinfo" : 0,
-                              "modestbranding" : 0,
-                              "loop" : 1,
-                              "autoplay" : 1,
-                              "playlist" : "mNHq7T9YHHs"
-                              ] as [String : Any]
-            ytplayerView.load(withVideoId: "mNHq7T9YHHs", playerVars: playerVars)
-  //      }
     }
+    
+    
 
-    
-    
-    
-    
-    
-    func loadData() {
-        
+    func setupCookingEvent() {
         cookingEventImageView.image = cookingEvent!.image
-        profileDetailImageView.image = cookingEvent!.profile?.profileImage
+        profileImageView.image = cookingEvent!.profile?.profileImage
         cookingOfferTitleLabel.text = cookingEvent!.title
         cookingOfferDescriptionLabel.text = cookingEvent!.description
         profileName.text = cookingEvent!.profile?.firstName
+        profileFullNameLabel.text = cookingEvent!.profile?.userName
+        profileTextLable.text = cookingEvent?.profile?.profileText
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateStyle = .none
+        timeFormatter.timeStyle = .short
+        let today = Date()
+        
+        let dateString = dateFormatter.string(from: cookingEvent!.eventDate!)
+        switch dateString {
+        case dateFormatter.string(from: today):
+            dateLabel.text = "Today at " + timeFormatter.string(from: cookingEvent!.eventDate!)
+        case dateFormatter.string(from: today.addingTimeInterval(60*60*24)):
+            dateLabel.text = "Tomorrow at " + timeFormatter.string(from: cookingEvent!.eventDate!)
+        default:
+            dateLabel.text = dateFormatter.string(from: cookingEvent!.eventDate!) + " at " + timeFormatter.string(from: cookingEvent!.eventDate!)
+        }
+
+
         
         self.title = cookingEvent!.title
         
@@ -97,33 +117,45 @@ class CookingOfferDetailViewController: UITableViewController {
             candleLightDinnerIndicator.isHighlighted = true
             candleLightView.isHidden = false
             cookingTogetherView.isHidden = true
+            canleLightLabel.text = "This is a candle-light dinner. It's just you and \(cookingEvent!.profile!.firstName!)."
         case .CookingTogether?:
             candleLightDinnerIndicator.isHighlighted = false
-            candleLightView.isHidden = true
-            cookingTogetherView.isHidden = false
+           candleLightView.isHidden = true
+         cookingTogetherView.isHidden = false
         case .CommercialDining?: break
         case nil: break
         }
         
-        if cookingEvent?.price != nil {
-        priceLable.text = "\(cookingEvent!.price!) €"
-        } else {
-        priceLable.isHidden = true
-        priceLabelDescription.isHidden = true
+        
+        if cookingEvent?.coordinates != nil {
+            let region = MKCoordinateRegion(center: cookingEvent!.coordinates!, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            mapView.setRegion(region, animated: true)
+            locationLabel.text = cookingEvent!.locationString
         }
+        
+        // if cookingEvent!.usesVideo {
+        
+        let playerVars = ["playsinline" : 1,
+                          "controls" : 1,
+                          "showinfo" : 0,
+                          "modestbranding" : 0,
+                          "loop" : 1,
+                          "autoplay" : 1,
+                          "playlist" : "mNHq7T9YHHs"
+            ] as [String : Any]
+        ytplayerView.load(withVideoId: "mNHq7T9YHHs", playerVars: playerVars)
+        //        } else {
+        //        ytplayerCell.isHidden = true
+        //
+        //        }
+    }
 
     
-        profileTextLable.text = cookingEvent?.profile?.profileText
-        if cookingEvent?.coordinates != nil {
-        let region = MKCoordinateRegion(center: cookingEvent!.coordinates!, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-            mapView.setRegion(region, animated: true)
-        }
-    }
+
     
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
@@ -153,28 +185,10 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
         return UITableViewAutomaticDimension
-  
     }
     
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            switch section {
-            
-            case 2:
-                return "Who will come?"
-            case 3:
-                return "Info"
-            case 4:
-                return "Who hosts me?"
-            case 5:
-                return "Where is it?"
-            default:
-                return nil
-            }
-    
-    }
+
     
 
 
