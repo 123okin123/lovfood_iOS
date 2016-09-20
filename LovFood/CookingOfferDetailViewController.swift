@@ -61,6 +61,50 @@ class CookingOfferDetailViewController: UITableViewController {
     
     
     @IBAction func sendButtonPressed(_ sender: UIButton) {
+
+        let today = Date()
+        print(today)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+        print(dateFormatter.string(from: today))
+        
+        let conversationDictionary :NSDictionary = [
+            "lastMessage" : self.messageTextField.text!,
+            "lastMessageDate" : dateFormatter.string(from: today),
+            "users" : [
+                user.uid : true,
+                self.cookingEvent!.userId! : true,
+            ]
+        ]
+        let messageDictionary :NSDictionary = [
+            "date" : dateFormatter.string(from: today),
+            "senderId" : user.uid,
+            "text" : self.messageTextField.text!
+        ]
+        
+        let query = dataBaseRef.child("conversations").queryOrdered(byChild: "users/\(user.uid)").queryEqual(toValue: true)
+        query.observeSingleEvent(of: .value, with: {(snapshot) in
+            print(((snapshot.value as? NSDictionary)?.allValues as? [NSDictionary]))
+            var conversationExists = false
+            
+            if let conversations = snapshot.value as? NSDictionary {
+                for conversation in conversations {
+                    if ((conversation.value as! NSDictionary)["users"] as! NSDictionary).isEqual(to: [self.cookingEvent!.userId! : 1, user.uid : 1]) {
+                        print("conversation exists with id:\(conversation.key)")
+                        dataBaseRef.child("conversations").child(conversation.key as! String).setValue(conversationDictionary)
+                        dataBaseRef.child("messages").child(conversation.key as! String).childByAutoId().setValue(messageDictionary)
+                        conversationExists = true
+                    } else {
+                        print("conversation does not exist")
+                    }
+                }
+            }
+            if !conversationExists {
+                let conversationDBRef = dataBaseRef.child("conversations").childByAutoId()
+                conversationDBRef.setValue(conversationDictionary)
+                dataBaseRef.child("messages").child(conversationDBRef.key).childByAutoId().setValue(messageDictionary)
+            }
+        })
         messageTextField.text = ""
         messageTextField.resignFirstResponder()
     }
@@ -70,8 +114,6 @@ class CookingOfferDetailViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.delegate = self
-        tableView.dataSource = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 240
         setupCookingEvent()
@@ -170,7 +212,7 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        messageTextField.resignFirstResponder()
+        
         
         if tableView.contentOffset.y < 0 {
             cookingEventImageView.frame.size.height = 210 - tableView.contentOffset.y
@@ -182,6 +224,10 @@ class CookingOfferDetailViewController: UITableViewController {
         }
 
         
+    }
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        messageTextField.resignFirstResponder()
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

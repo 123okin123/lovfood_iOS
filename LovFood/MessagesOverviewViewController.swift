@@ -11,23 +11,10 @@ import Firebase
 
 class MessagesOverviewViewController: UITableViewController {
 
-    @IBOutlet weak var newMessageIndicator: UIView! {
-        didSet {
-            newMessageIndicator.layer.cornerRadius = 9
-    }
-    }
-    @IBOutlet var smallProfileImageBG: [UIView]! {
-        didSet {
-            for sPIBG in smallProfileImageBG {
-                sPIBG.layer.cornerRadius = 15
-                sPIBG.layer.shadowColor = UIColor.darkGray.cgColor
-                sPIBG.layer.shadowOpacity = 0.5
-                sPIBG.layer.shadowOffset = CGSize(width: 1, height: 1)
-            }
- 
-        }
-    }
 
+    
+    var conversations = [Conversation]()
+    var query  :FIRDatabaseQuery!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +24,43 @@ class MessagesOverviewViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+            query = dataBaseRef.child("conversations").queryOrdered(byChild: "users/\(user.uid)").queryEqual(toValue: true)
+            query.observe(.childAdded, with: { (snapshot) in
+                let conversation = Conversation(snapshot: snapshot)
+                conversation.users = [CookingProfile?](repeating: nil, count: conversation.userIds!.count)
+                if let userIds = conversation.userIds {
+                for i in 0...userIds.count - 1 {
+                
+                    usersDBRef.child(conversation.userIds![i]).observeSingleEvent(of: .value, with: { (snapshot) in
+                        let profile = CookingProfile(snapshot: snapshot)
+                        conversation.users![i] = profile
+                        if !conversation.users!.contains(where: {(profile) in return profile == nil}) {
+                        self.conversations.append(conversation)
+                        self.tableView.reloadData()
+                        }
+                    })
+                    
+                }
+                }
+
+            })
+            query.observe(.childRemoved, with: { (snapshot) in
+
+            })
+            query.observe(.childChanged, with: { (snapshot) in
+
+            })
+   
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        query.removeAllObservers()
+        conversations.removeAll()
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,18 +77,26 @@ class MessagesOverviewViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 2
+        return conversations.count
     }
 
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCellID", for: indexPath) as! ConversationsCell
+        cell.conversation = conversations[indexPath.row]
+        let profile = conversations[indexPath.row].allOtherUsers?[0]
+        if let imageURL = profile?.profileImageURL {
+            cell.profileimageView.setImage(withUrl: imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
+                profile?.profileImage = instance?.image
+                cell.profileimageView.layer.add(CATransition(), forKey: nil)
+            })
+            
+            
+        }
 
-        // Configure the cell...
-
+        
         return cell
     }
-    */
+
 
     /*
     // Override to support conditional editing of the table view.
@@ -108,8 +140,10 @@ class MessagesOverviewViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         let chatVc = segue.destination as! ChatViewController
+        let cell = sender as! ConversationsCell
+        chatVc.conversation = cell.conversation!
         chatVc.senderId = FIRAuth.auth()?.currentUser?.uid
-        chatVc.senderDisplayName = "niko"
+        chatVc.senderDisplayName = user.displayName
     }
 
 }

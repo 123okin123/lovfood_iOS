@@ -317,7 +317,6 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         } else {
             
             if let imageURL = cookingEvent.imageURL {
-                print("ping3")
                 cell.cookingOfferImageView.setImage(withUrl: imageURL, placeholder: UIImage(named: "Placeholder"), crossFadePlaceholder: true, cacheScaled: false, completion: { instance, error in
                     cookingEvent.image = instance?.image
                     cell.cookingOfferImageView.layer.add(CATransition(), forKey: nil)

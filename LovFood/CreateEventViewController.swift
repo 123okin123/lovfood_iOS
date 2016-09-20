@@ -25,7 +25,7 @@ class CreateEventViewController: UITableViewController, UIImagePickerControllerD
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var attendeesCountLabel: UILabel!
     @IBOutlet weak var profilePictureImageView: UIImageView! {didSet{
-        profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.width / 2
+        profilePictureImageView.layer.cornerRadius = 50
         profilePictureImageView.clipsToBounds = true
         profilePictureImageView.layer.borderColor = UIColor.white.cgColor
         profilePictureImageView.layer.borderWidth = 3

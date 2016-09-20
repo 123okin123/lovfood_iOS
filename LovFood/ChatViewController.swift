@@ -16,6 +16,8 @@ class ChatViewController: JSQMessagesViewController {
     var messages = [JSQMessage]()
     var messageRef: FIRDatabaseReference!
     
+    var conversation :Conversation!
+    
     var userIsTypingRef: FIRDatabaseReference!
     var usersTypingQuery: FIRDatabaseQuery!
     
@@ -27,7 +29,6 @@ class ChatViewController: JSQMessagesViewController {
             return localTyping
         }
         set {
-            // 3
             localTyping = newValue
             userIsTypingRef.setValue(newValue)
         }
@@ -40,13 +41,13 @@ class ChatViewController: JSQMessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Lisa"
+        title = conversation.allOtherUsers?[0]?.userName
         
         setupBubbles()
         setupAvatarImages()
        // collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
-        messageRef = dataBaseRef.child("messages")
+        messageRef = dataBaseRef.child("messages").child(conversation.id!)
 
     }
 
@@ -55,20 +56,23 @@ class ChatViewController: JSQMessagesViewController {
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!,
                                      senderDisplayName: String!, date: Date!) {
 
-        
-        //CONVERT FROM NSDate to String
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: date)
-        //SAVE MESSAGE IN DATABASE
+        dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
         let itemRef = messageRef.childByAutoId()
-        let messageItem = [ // 2
-            "text": text,
+        let messageItem :NSDictionary = [
+            "date": dateFormatter.string(from: date),
             "senderId": senderId,
-            "date": dateString
+            "text": text
         ]
         itemRef.setValue(messageItem)
  
+        let conversationDictionary : [AnyHashable : Any] = [
+            "lastMessage" : text,
+            "lastMessageDate" : dateFormatter.string(from: date),
+        ]
+        
+        dataBaseRef.child("conversations").child(conversation.id!).updateChildValues(conversationDictionary)
+        
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
     
         finishSendingMessage()
@@ -140,8 +144,8 @@ class ChatViewController: JSQMessagesViewController {
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
                                  messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
-        let message = messages[indexPath.item] // 1
-        if message.senderId == senderId { // 2
+        let message = messages[indexPath.item]
+        if message.senderId == senderId {
             return outgoingBubbleImageView
         } else {
             return incomingBubbleImageView
@@ -150,8 +154,8 @@ class ChatViewController: JSQMessagesViewController {
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
                                  avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
-        let message = messages[indexPath.item] // 1
-        if message.senderId == senderId { // 2
+        let message = messages[indexPath.item]
+        if message.senderId == senderId {
             return nil
         } else {
             return incomingAvatarImageView
@@ -190,14 +194,14 @@ class ChatViewController: JSQMessagesViewController {
     
         messagesQuery.observe(.childAdded) { (snapshot: FIRDataSnapshot!) in
 
-            let id = (snapshot.value as! NSDictionary)["senderId"] as! String
-            let text = (snapshot.value as! NSDictionary)["text"] as! String
-            let dateString = (snapshot.value as! NSDictionary)["date"] as! String
+            guard let id = (snapshot.value as? NSDictionary)?["senderId"] as? String else {return}
+            guard let text = (snapshot.value as? NSDictionary)?["text"] as? String else {return}
+            guard let dateString = (snapshot.value as? NSDictionary)?["date"] as? String else {return}
             
             //CONVERT String to NSDate
              let dateFormatter = DateFormatter()
-             dateFormatter.dateFormat = "yyyy-MM-dd"
-             let date = dateFormatter.date(from: dateString)!
+             dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+            guard let date = dateFormatter.date(from: dateString) else {return}
             self.addMessage(id, date: date, text: text)
             
             self.finishReceivingMessage()
@@ -211,12 +215,11 @@ class ChatViewController: JSQMessagesViewController {
         usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqual(toValue: true)
         usersTypingQuery.observe(.value) { (data: FIRDataSnapshot!) in
             
-            // 3 You're the only typing, don't show the indicator
+  
             if data.childrenCount == 1 && self.isTyping {
                 return
             }
-            
-            // 4 Are there others typing?
+
             self.showTypingIndicator = data.childrenCount > 0
             self.scrollToBottom(animated: true)
         }

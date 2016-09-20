@@ -15,6 +15,7 @@ open class CookingProfile {
     var lastName :String?
     var userName :String?
     var email :String?
+    var userId :String?
     
     var profileImageURL :URL?
     var profileSmallImageURL :URL?
@@ -30,17 +31,18 @@ open class CookingProfile {
     init(){}
     
     init(snapshot: FIRDataSnapshot) {
-    self.firstName = (snapshot.value as! NSDictionary)["firstname"] as? String
-    self.lastName = (snapshot.value as! NSDictionary)["lastname"] as? String
-    self.userName = (snapshot.value as! NSDictionary)["username"] as? String
-    self.email = (snapshot.value as! NSDictionary)["email"] as? String
-    if let profileImageURLString = (snapshot.value as! NSDictionary)["profileImageURL"] as? String {
+    self.firstName = (snapshot.value as? NSDictionary)?["firstname"] as? String
+    self.lastName = (snapshot.value as? NSDictionary)?["lastname"] as? String
+    self.userName = (snapshot.value as? NSDictionary)?["username"] as? String
+    self.email = (snapshot.value as? NSDictionary)?["email"] as? String
+    self.userId = snapshot.key 
+    if let profileImageURLString = (snapshot.value as? NSDictionary)?["profileImageURL"] as? String {
             self.profileImageURL = URL(string: profileImageURLString)
     }
-    if let profileSmallImageURLString = (snapshot.value as! NSDictionary)["profileSmallImageURL"] as? String {
+    if let profileSmallImageURLString = (snapshot.value as? NSDictionary)?["profileSmallImageURL"] as? String {
             self.profileSmallImageURL = URL(string: profileSmallImageURLString)
     }
-    if let genderString = (snapshot.value as! NSDictionary)["gender"] as? String {
+    if let genderString = (snapshot.value as? NSDictionary)?["gender"] as? String {
         switch genderString {
         case "male": gender = .Male
         case "female": gender = .Female

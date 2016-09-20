@@ -45,6 +45,8 @@
 		10DD70781D2E85B4002CCE09 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1006044D1CCCD47B00FDCF05 /* Info.plist */; };
 		10DD70791D2E85BC002CCE09 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 100604581CCCD47B00FDCF05 /* Info.plist */; };
 		10DDE6881D13216600DC4529 /* MessagesOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DDE6871D13216600DC4529 /* MessagesOverviewViewController.swift */; };
+		10F23A381D8FEBD600354DA7 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F23A371D8FEBD600354DA7 /* Conversation.swift */; };
+		10F23A3A1D8FF9D600354DA7 /* ConversationsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F23A391D8FF9D600354DA7 /* ConversationsCell.swift */; };
 		10FDE5401D34CF550056394D /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10FDE53F1D34CF550056394D /* TabBarController.swift */; };
 		3EAAB5D0F16D02561483E926 /* Pods_LovFood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC6EF8623B68E7E12CA01C2C /* Pods_LovFood.framework */; };
 		A9A2B7DDCDC41A64B8515D16 /* Pods_LovFoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4CC1AF5F12F4C737E90E809 /* Pods_LovFoodTests.framework */; };
@@ -112,6 +114,8 @@
 		10D2BD001CF327F000D7415F /* FilterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		10D2BD021CF4850B00D7415F /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		10DDE6871D13216600DC4529 /* MessagesOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesOverviewViewController.swift; sourceTree = "<group>"; };
+		10F23A371D8FEBD600354DA7 /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
+		10F23A391D8FF9D600354DA7 /* ConversationsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsCell.swift; sourceTree = "<group>"; };
 		10FDE53F1D34CF550056394D /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		20ABA8FA14711BDD2AF58C75 /* Pods-LovFoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovFoodTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LovFoodTests/Pods-LovFoodTests.debug.xcconfig"; sourceTree = "<group>"; };
 		595328386B36984A47A89401 /* Pods-LovFoodUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovFoodUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LovFoodUITests/Pods-LovFoodUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -270,6 +274,8 @@
 			children = (
 				10258F131D314F0B00B40F3F /* ChatViewController.swift */,
 				10DDE6871D13216600DC4529 /* MessagesOverviewViewController.swift */,
+				10F23A371D8FEBD600354DA7 /* Conversation.swift */,
+				10F23A391D8FF9D600354DA7 /* ConversationsCell.swift */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -613,6 +619,7 @@
 				10DDE6881D13216600DC4529 /* MessagesOverviewViewController.swift in Sources */,
 				10784FBE1CFD696D00AEFB14 /* PlusMinusButton.swift in Sources */,
 				10258F141D314F0B00B40F3F /* ChatViewController.swift in Sources */,
+				10F23A381D8FEBD600354DA7 /* Conversation.swift in Sources */,
 				106F39391CF1F8BC00844E7E /* CookingEvent.swift in Sources */,
 				10ADD8B11CF86EB800EC7658 /* MapAnnotation.swift in Sources */,
 				1069A6FF1D3516C30061BB98 /* MoreViewController.swift in Sources */,
@@ -622,6 +629,7 @@
 				10D2BD011CF327F000D7415F /* FilterButton.swift in Sources */,
 				106F393B1CF1F8BC00844E7E /* CenterLocationButton.swift in Sources */,
 				100D81BE1D42157E00861865 /* WeAreUpdatingLocationViewController.swift in Sources */,
+				10F23A3A1D8FF9D600354DA7 /* ConversationsCell.swift in Sources */,
 				10FDE5401D34CF550056394D /* TabBarController.swift in Sources */,
 				109F6F2E1CFB7D1500DA2438 /* CreateEventViewController.swift in Sources */,
 			);
