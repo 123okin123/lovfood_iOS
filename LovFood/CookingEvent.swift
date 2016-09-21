@@ -58,23 +58,25 @@ open class CookingEvent {
         dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
 
         
-    self.title = (snapshot.value as! NSDictionary)["title"] as? String
-    self.description = (snapshot.value as! NSDictionary)["description"] as? String
-    self.userId = (snapshot.value as! NSDictionary)["userId"] as? String
+    self.title = (snapshot.value as? NSDictionary)?["title"] as? String
+    self.description = (snapshot.value as? NSDictionary)?["description"] as? String
+    self.userId = (snapshot.value as? NSDictionary)?["userId"] as? String
     self.eventId = snapshot.key
-    let dateString = (snapshot.value as! NSDictionary)["eventDate"] as! String
-    let timeString = (snapshot.value as! NSDictionary)["eventTime"] as! String
-    self.eventDate = dateFormatter.date(from: (dateString + " " + timeString))
-    let latitude = ((snapshot.value as! NSDictionary)["coordinates"]as! NSDictionary)["lat"] as? Double
-    let longitude = ((snapshot.value as! NSDictionary)["coordinates"] as! NSDictionary)["long"] as? Double
+        if let dateString = (snapshot.value as? NSDictionary)?["eventDate"] as? String {
+            if let timeString = (snapshot.value as? NSDictionary)?["eventTime"] as? String {
+                self.eventDate = dateFormatter.date(from: (dateString + " " + timeString))
+            }
+        }
+    let latitude = ((snapshot.value as? NSDictionary)?["coordinates"]as? NSDictionary)?["lat"] as? Double
+    let longitude = ((snapshot.value as? NSDictionary)?["coordinates"] as? NSDictionary)?["long"] as? Double
         if latitude != nil && longitude != nil {
             self.coordinates = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
         }
-    self.locationString = (snapshot.value as! NSDictionary)["locationString"] as? String
-    if let imageURLString = (snapshot.value as! NSDictionary)["imageURL"] as? String {
+    self.locationString = (snapshot.value as? NSDictionary)?["locationString"] as? String
+    if let imageURLString = (snapshot.value as? NSDictionary)?["imageURL"] as? String {
             self.imageURL = URL(string: imageURLString)
     }
-    if let occasionRawValue = (snapshot.value as! NSDictionary)["occasion"] as? String {
+    if let occasionRawValue = (snapshot.value as? NSDictionary)?["occasion"] as? String {
         switch occasionRawValue {
         case "CandleLightDinner": occasion = .CandleLightDinner
         case "CookingTogether": occasion = .CookingTogether
