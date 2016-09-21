@@ -111,11 +111,10 @@ class SelectImageViewController: UICollectionViewController, UICollectionViewDel
                 // Uh-oh, an error occurred!
                 print(error)
             } else {
-                
-                // Data for "images/island.jpg" is returned
+            
                 let image: UIImage! = UIImage(data: data!)
                 cell.imageView.image = image
-                self.images[(indexPath as NSIndexPath).row].thumbImage = image
+             
                 
             }
         }
