@@ -233,9 +233,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         let cookingEvent = cookingEvents[(indexPath as NSIndexPath).row]
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .none
-        dateFormatter.locale = Locale(identifier: "ja_JP")
+        dateFormatter.dateFormat = "yyyy_MM_dd"
         
         
         cookingEventsDBRef.child(cookingEvent.eventId!).removeValue()

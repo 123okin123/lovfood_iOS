@@ -21,7 +21,7 @@ class ChatViewController: JSQMessagesViewController {
     var userIsTypingRef: FIRDatabaseReference!
     var usersTypingQuery: FIRDatabaseQuery!
     
-    let imagePicker = UIImagePickerController()
+    //let imagePicker = UIImagePickerController()
 
     fileprivate var localTyping = false
     var isTyping: Bool {

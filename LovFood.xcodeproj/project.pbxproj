@@ -113,6 +113,7 @@
 		10ADD8B21CF9916F00EC7658 /* MyEventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEventsViewController.swift; sourceTree = "<group>"; };
 		10D2BD001CF327F000D7415F /* FilterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		10D2BD021CF4850B00D7415F /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		10DC6D401D91B42D00F44D63 /* LovFood.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LovFood.entitlements; sourceTree = "<group>"; };
 		10DDE6871D13216600DC4529 /* MessagesOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesOverviewViewController.swift; sourceTree = "<group>"; };
 		10F23A371D8FEBD600354DA7 /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		10F23A391D8FF9D600354DA7 /* ConversationsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsCell.swift; sourceTree = "<group>"; };
@@ -197,6 +198,7 @@
 				1006043D1CCCD47B00FDCF05 /* Assets.xcassets */,
 				1006043F1CCCD47B00FDCF05 /* LaunchScreen.storyboard */,
 				100604421CCCD47B00FDCF05 /* Info.plist */,
+				10DC6D401D91B42D00F44D63 /* LovFood.entitlements */,
 				106EC72E1D47F9E800F09D48 /* GoogleService-Info.plist */,
 			);
 			path = LovFood;
@@ -404,6 +406,9 @@
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 							com.apple.Push = {
@@ -781,12 +786,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LovFood/LovFood.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/LovFood/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nikolaikratz.lovfood;
 				PRODUCT_NAME = LovFood;
@@ -800,12 +807,14 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LovFood/LovFood.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/LovFood/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nikolaikratz.lovfood;
 				PRODUCT_NAME = LovFood;
