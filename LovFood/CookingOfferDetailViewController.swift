@@ -140,7 +140,7 @@ class CookingOfferDetailViewController: UITableViewController {
         timeFormatter.timeStyle = .short
         let today = Date()
         if let eventDate = cookingEvent!.eventDate {
-       let dateString = dateFormatter.string(from: cookingEvent!.eventDate!)
+            let dateString = dateFormatter.string(from: eventDate)
         switch dateString {
         case dateFormatter.string(from: today):
             dateLabel.text = "Today at " + timeFormatter.string(from: cookingEvent!.eventDate!)
