@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings: UIUserNotificationSettings =
             UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
         application.registerUserNotificationSettings(settings)
-        
+        application.registerForRemoteNotifications()
 
         
         FIRAuth.auth()?.addStateDidChangeListener { auth, userToLoggin in
@@ -172,7 +172,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         if notificationSettings.types != UIUserNotificationType() {
-            application.registerForRemoteNotifications()
+            
         }
         
     }

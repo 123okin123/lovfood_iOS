@@ -8,6 +8,8 @@ target 'LovFood' do
     pod 'Firebase/Database'
     pod 'Firebase/Auth'
     pod 'Firebase/Storage'
+    pod 'Firebase/Core'
+    pod 'Firebase/Messaging'
 	pod 'JSQMessagesViewController'
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'

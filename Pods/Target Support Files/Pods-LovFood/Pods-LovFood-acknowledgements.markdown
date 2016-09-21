@@ -117,6 +117,10 @@ Copyright 2016 Google
 
 Copyright 2016 Google
 
+## FirebaseMessaging
+
+Copyright 2016 Google
+
 ## FirebaseStorage
 
 Copyright 2016 Google
@@ -145,6 +149,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
+## GoogleIPhoneUtilities
+
+Copyright 2015 Google Inc.
 
 ## GoogleInterchangeUtilities
 
