@@ -32,7 +32,7 @@ class WeAreUpdatingLocationViewController: UIViewController, CLLocationManagerDe
         if !(locations.isEmpty) {
             currentUserLocation = locations.last!
             if let tabBarC = presentingViewController as? TabBarController {
-                if let collectionVC = tabBarC.viewControllers![0] as? CollectionViewController {
+                if tabBarC.viewControllers![0] is CollectionViewController {
                     
                     presentingViewController?.dismiss(animated: true, completion: nil)
                 }

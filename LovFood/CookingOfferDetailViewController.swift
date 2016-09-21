@@ -65,7 +65,7 @@ class CookingOfferDetailViewController: UITableViewController {
         let today = Date()
         print(today)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+ 
         print(dateFormatter.string(from: today))
         
         let conversationDictionary :NSDictionary = [
@@ -139,8 +139,8 @@ class CookingOfferDetailViewController: UITableViewController {
         timeFormatter.dateStyle = .none
         timeFormatter.timeStyle = .short
         let today = Date()
-        
-        let dateString = dateFormatter.string(from: cookingEvent!.eventDate!)
+        if let eventDate = cookingEvent!.eventDate {
+       let dateString = dateFormatter.string(from: cookingEvent!.eventDate!)
         switch dateString {
         case dateFormatter.string(from: today):
             dateLabel.text = "Today at " + timeFormatter.string(from: cookingEvent!.eventDate!)
@@ -149,7 +149,7 @@ class CookingOfferDetailViewController: UITableViewController {
         default:
             dateLabel.text = dateFormatter.string(from: cookingEvent!.eventDate!) + " at " + timeFormatter.string(from: cookingEvent!.eventDate!)
         }
-
+        }
 
         
         self.title = cookingEvent!.title

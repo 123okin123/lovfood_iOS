@@ -57,7 +57,7 @@ class ChatViewController: JSQMessagesViewController {
                                      senderDisplayName: String!, date: Date!) {
 
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+
         let itemRef = messageRef.childByAutoId()
         let messageItem :NSDictionary = [
             "date": dateFormatter.string(from: date),
@@ -185,7 +185,10 @@ class ChatViewController: JSQMessagesViewController {
             with: UIColor.jsq_messageBubbleLightGray())
     }
     fileprivate func setupAvatarImages() {
-         incomingAvatarImageView = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "lisa_small"), diameter: 30)
+        if let image = conversation.allOtherUsers?[0]?.profileImage {
+            incomingAvatarImageView = JSQMessagesAvatarImageFactory.avatarImage(with: image, diameter: 30)
+        }
+
 
     }
     
@@ -198,9 +201,9 @@ class ChatViewController: JSQMessagesViewController {
             guard let text = (snapshot.value as? NSDictionary)?["text"] as? String else {return}
             guard let dateString = (snapshot.value as? NSDictionary)?["date"] as? String else {return}
             
-            //CONVERT String to NSDate
+            
              let dateFormatter = DateFormatter()
-             dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+
             guard let date = dateFormatter.date(from: dateString) else {return}
             self.addMessage(id, date: date, text: text)
             

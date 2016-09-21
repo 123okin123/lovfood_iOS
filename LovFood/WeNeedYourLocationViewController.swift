@@ -61,7 +61,7 @@ class WeNeedYourLocationViewController: UIViewController, CLLocationManagerDeleg
         currentUserLocation = locations.last!
             if let tabBarC = presentingViewController as? TabBarController {
                 if let navVC = tabBarC.viewControllers![0] as? UINavigationController {
-                    if let collectionVC = navVC.viewControllers[0] as? CollectionViewController {
+                    if navVC.viewControllers[0] is CollectionViewController {
                         presentingViewController?.dismiss(animated: true, completion: nil)
                     }
                 }

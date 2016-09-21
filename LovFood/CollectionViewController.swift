@@ -115,7 +115,7 @@ class CollectionViewController: UICollectionViewController, UICollectionViewDele
         
         if segue.identifier == "showFiltersSegueID" {
             if let navVC = segue.destination as? UINavigationController {
-                if let filterVC = navVC.viewControllers[0] as? FilterTableViewController {
+                if navVC.viewControllers[0] is FilterTableViewController {
                 
                 }
             }
