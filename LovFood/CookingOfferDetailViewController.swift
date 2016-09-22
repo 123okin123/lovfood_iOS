@@ -27,6 +27,9 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     @IBOutlet weak var sendButton: UIButton!  { didSet {
         sendButton.layer.cornerRadius = 5
+        if user.uid == cookingEvent!.userId {
+        sendButton.isEnabled = false
+        }
         }
     }
     @IBOutlet weak var cookingEventImageView: UIImageView!
@@ -59,9 +62,11 @@ class CookingOfferDetailViewController: UITableViewController {
     
     
     
+    // Quick Fix:
+    var messageSend = false
     
     @IBAction func sendButtonPressed(_ sender: UIButton) {
-
+        if !messageSend {
         let today = Date()
         print(today)
         let dateFormatter = DateFormatter()
@@ -91,8 +96,16 @@ class CookingOfferDetailViewController: UITableViewController {
                 for conversation in conversations {
                     if ((conversation.value as! NSDictionary)["users"] as! NSDictionary).isEqual(to: [self.cookingEvent!.userId! : 1, user.uid : 1]) {
                         print("conversation exists with id:\(conversation.key)")
-                        dataBaseRef.child("conversations").child(conversation.key as! String).setValue(conversationDictionary)
-                        dataBaseRef.child("messages").child(conversation.key as! String).childByAutoId().setValue(messageDictionary)
+                        dataBaseRef.child("conversations").child(conversation.key as! String).setValue(conversationDictionary, withCompletionBlock: {(error, ref) in
+                            dataBaseRef.child("messages").child(conversation.key as! String).childByAutoId().setValue(messageDictionary, withCompletionBlock: {(error, ref) in
+                            self.messageSend = true
+                                let alertController = UIAlertController(title: "Message send", message: "Your Message to \(self.cookingEvent!.profile!.userName!)", preferredStyle: .alert)
+                                let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                                alertController.addAction(OKAction)
+                                self.present(alertController, animated: true, completion:  nil)
+                            })
+                            
+                        })
                         conversationExists = true
                     } else {
                         print("conversation does not exist")
@@ -101,12 +114,24 @@ class CookingOfferDetailViewController: UITableViewController {
             }
             if !conversationExists {
                 let conversationDBRef = dataBaseRef.child("conversations").childByAutoId()
-                conversationDBRef.setValue(conversationDictionary)
-                dataBaseRef.child("messages").child(conversationDBRef.key).childByAutoId().setValue(messageDictionary)
+                conversationDBRef.setValue(conversationDictionary, withCompletionBlock: {(error, ref) in
+                    dataBaseRef.child("messages").child(conversationDBRef.key).childByAutoId().setValue(messageDictionary, withCompletionBlock: {(error, ref) in
+                    self.messageSend = true
+                        let alertController = UIAlertController(title: "Message send", message: "Your Message to \(self.cookingEvent!.profile!.userName!)", preferredStyle: .alert)
+                        let OKAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(OKAction)
+                        self.present(alertController, animated: true, completion:  nil)
+                    })
+                })
+                
+                
+                
+
             }
         })
         messageTextField.text = ""
         messageTextField.resignFirstResponder()
+        }
     }
     
     
@@ -175,7 +200,7 @@ class CookingOfferDetailViewController: UITableViewController {
             locationLabel.text = cookingEvent!.locationString
         }
         
-        // if cookingEvent!.usesVideo {
+         if cookingEvent!.usesVideo {
         
         let playerVars = ["playsinline" : 1,
                           "controls" : 1,
@@ -186,10 +211,9 @@ class CookingOfferDetailViewController: UITableViewController {
                           "playlist" : "mNHq7T9YHHs"
             ] as [String : Any]
         ytplayerView.load(withVideoId: "mNHq7T9YHHs", playerVars: playerVars)
-        //        } else {
-        //        ytplayerCell.isHidden = true
-        //
-        //        }
+               } else {
+                ytplayerCell.isHidden = true
+            }
     }
 
     
@@ -231,7 +255,18 @@ class CookingOfferDetailViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if !(cookingEvent!.usesVideo) {
+            if indexPath.row == 1 && indexPath.section == 1 {
+            return 0
+            }
+            else {
+            return UITableViewAutomaticDimension
+            }
+        } else {
         return UITableViewAutomaticDimension
+        }
+        
+        
     }
     
 

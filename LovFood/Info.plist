@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photos to make it happen.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -30,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>27</string>
+	<string>28</string>
 	<key>FacebookAppID</key>
 	<string>1153681601359581</string>
 	<key>FacebookDisplayName</key>
@@ -48,6 +46,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need you location to make it happen.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photos to make it happen.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
