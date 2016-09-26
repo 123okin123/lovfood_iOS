@@ -10,19 +10,34 @@ import UIKit
 import Firebase
 
 class MoreViewController: UITableViewController {
+    
+    
+    
     @IBOutlet weak var profilePictureImageView: UIImageView! {didSet{
         profilePictureImageView.layer.cornerRadius = 50
         profilePictureImageView.clipsToBounds = true
         profilePictureImageView.layer.borderColor = UIColor.white.cgColor
         profilePictureImageView.layer.borderWidth = 3
         }}
+    
+    
+    
+    
     @IBOutlet weak var profileNameLabel: UILabel!
 
+    
+    
+    
+    
+    
     @IBAction func signOutButtonPressed(_ sender: UIButton) {
         try! FIRAuth.auth()?.signOut()
 
     }
     
+    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

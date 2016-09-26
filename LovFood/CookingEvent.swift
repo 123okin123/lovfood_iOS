@@ -54,17 +54,20 @@ open class CookingEvent {
     }
     init(snapshot: FIRDataSnapshot) {
         
-    let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+
 
       print((snapshot.value as? NSDictionary)?["eventTime"])
+    print((snapshot.value as? NSDictionary)?["eventDate"])
     self.title = (snapshot.value as? NSDictionary)?["title"] as? String
     self.description = (snapshot.value as? NSDictionary)?["description"] as? String
     self.userId = (snapshot.value as? NSDictionary)?["userId"] as? String
     self.eventId = snapshot.key
         if let dateString = (snapshot.value as? NSDictionary)?["eventDate"] as? String {
             if let timeString = (snapshot.value as? NSDictionary)?["eventTime"] as? String {
-                print(dateString + timeString)
+                print((dateString + " " + timeString))
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy_MM_dd hh:mm"
                 self.eventDate = dateFormatter.date(from: (dateString + " " + timeString))
             }
         }
@@ -85,7 +88,12 @@ open class CookingEvent {
         default: break
         }
     }
+        
+        if let usesVideoDB = (snapshot.value as? NSDictionary)?["usesVideo"] as? Bool {
+        self.usesVideo = usesVideoDB
+        }
     }
+    
     
 
 

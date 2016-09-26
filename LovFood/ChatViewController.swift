@@ -51,6 +51,7 @@ class ChatViewController: JSQMessagesViewController {
 
     }
 
+    
 
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!,
@@ -66,10 +67,19 @@ class ChatViewController: JSQMessagesViewController {
         ]
         itemRef.setValue(messageItem)
  
-        let conversationDictionary : [AnyHashable : Any] = [
+        var conversationDictionary : [AnyHashable : Any] = [
             "lastMessage" : text,
             "lastMessageDate" : dateFormatter.string(from: date),
         ]
+        
+        
+        var unreadDictionary = [AnyHashable : Any]()
+        for id in conversation!.allOtherUsersIds! {
+        unreadDictionary[id!] = true
+        }
+        print(unreadDictionary)
+        
+        conversationDictionary["unread"] = unreadDictionary
         
         dataBaseRef.child("conversations").child(conversation.id!).updateChildValues(conversationDictionary)
         
@@ -114,10 +124,15 @@ class ChatViewController: JSQMessagesViewController {
         finishReceivingMessage()
         observeMessages()
         observeTyping()
+    
+        dataBaseRef.child("conversations").child(conversation.id!).child("unread").child(user.uid).removeValue()
         
     }
 
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        messageRef.removeAllObservers()
+        
+    }
     
     func addMessage(_ id: String, date: Date, text: String) {
         let message = JSQMessage(senderId: id, senderDisplayName: self.senderDisplayName, date: date, text: text)
@@ -206,7 +221,7 @@ class ChatViewController: JSQMessagesViewController {
 
             guard let date = dateFormatter.date(from: dateString) else {return}
             self.addMessage(id, date: date, text: text)
-            
+            dataBaseRef.child("conversations").child(self.conversation.id!).child("unread").child(user.uid).removeValue()
             self.finishReceivingMessage()
         }
     }
@@ -231,7 +246,6 @@ class ChatViewController: JSQMessagesViewController {
     override func textViewDidChange(_ textView: UITextView) {
         super.textViewDidChange(textView)
         // If the text is not empty, the user is typing
-        print(textView.text != "")
         isTyping = textView.text != ""
     }
 
@@ -245,5 +259,6 @@ class ChatViewController: JSQMessagesViewController {
         // Pass the selected object to the new view controller.
     }
     */
+ 
 
 }

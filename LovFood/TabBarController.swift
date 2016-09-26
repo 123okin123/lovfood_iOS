@@ -50,6 +50,12 @@ class TabBarController: UITabBarController {
         for i in 0...13{
             addDBObserverFor(i)
         }
+        if let navVC = self.viewControllers?[2] as? UINavigationController {
+        let messagesOverviewViewController = navVC.viewControllers[0] as! MessagesOverviewViewController
+            messagesOverviewViewController.addConversationsDBObserver()
+        }
+        
+        
     
     }
     
@@ -68,6 +74,7 @@ class TabBarController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
+
 
     
     func addDBObserverFor(_ dayIndex :Int) {

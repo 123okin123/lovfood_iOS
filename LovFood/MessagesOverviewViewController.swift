@@ -11,13 +11,16 @@ import Firebase
 
 class MessagesOverviewViewController: UITableViewController {
 
+    @IBOutlet weak var unreadIndicator: UIView!
 
     
     var conversations = [Conversation]()
+    var unreadConversationsCount = 0
     var query  :FIRDatabaseQuery!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -29,44 +32,86 @@ class MessagesOverviewViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-            query = dataBaseRef.child("conversations").queryOrdered(byChild: "users/\(user.uid)").queryEqual(toValue: true)
-            query.observe(.childAdded, with: { (snapshot) in
-                let conversation = Conversation(snapshot: snapshot)
-                conversation.users = [CookingProfile?](repeating: nil, count: conversation.userIds!.count)
-                if let userIds = conversation.userIds {
-                for i in 0...userIds.count - 1 {
-                
-                    usersDBRef.child(conversation.userIds![i]).observeSingleEvent(of: .value, with: { (snapshot) in
-                        let profile = CookingProfile(snapshot: snapshot)
-                        conversation.users![i] = profile
-                        if !conversation.users!.contains(where: {(profile) in return profile == nil}) {
-                        self.conversations.append(conversation)
-                        self.tableView.reloadData()
-                        }
-                    })
-                    
-                }
-                }
-
-            })
-            query.observe(.childRemoved, with: { (snapshot) in
-
-            })
-            query.observe(.childChanged, with: { (snapshot) in
-
-            })
-   
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        query.removeAllObservers()
-        conversations.removeAll()
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func checkForUnreadConversations() {
+        unreadConversationsCount = 0
+        for conversation in conversations {
+            if let unreadIds = conversation.unreadIds {
+                for id in unreadIds {
+                    if id == user.uid {
+                        unreadConversationsCount += 1
+                    }
+                }
+            }
+        }
+        if unreadConversationsCount == 0 {
+        navigationController?.tabBarItem.badgeValue = nil
+        } else {
+        navigationController?.tabBarItem.badgeValue = String(unreadConversationsCount)
+        }
+    }
+    
+    func addConversationsDBObserver() {
+        
+        query = dataBaseRef.child("conversations").queryOrdered(byChild: "users/\(user.uid)").queryEqual(toValue: true)
+        query.observe(.childAdded, with: { (snapshot) in
+            let conversation = Conversation(snapshot: snapshot)
+            conversation.users = [CookingProfile?](repeating: nil, count: conversation.userIds!.count)
+            if let userIds = conversation.userIds {
+                for i in 0...userIds.count - 1 {
+                    usersDBRef.child(conversation.userIds![i]).observeSingleEvent(of: .value, with: { (snapshot) in
+                        let profile = CookingProfile(snapshot: snapshot)
+                        conversation.users![i] = profile
+                        if !conversation.users!.contains(where: {(profile) in return profile == nil}) {
+                            self.conversations.append(conversation)
+                            self.checkForUnreadConversations()
+                            self.tableView.reloadData()
+                        }
+                    })
+                    
+                }
+            }
+            
+        })
+        query.observe(.childRemoved, with: { (snapshot) in
+            let conversation = Conversation(snapshot: snapshot)
+            if let index = self.conversations.index(where: {$0.id == conversation.id}) {
+            self.conversations.remove(at: index)
+            self.tableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .automatic)
+            }
+        })
+        query.observe(.childChanged, with: { (snapshot) in
+            let conversation = Conversation(snapshot: snapshot)
+            conversation.users = [CookingProfile?](repeating: nil, count: conversation.userIds!.count)
+            if let userIds = conversation.userIds {
+                for i in 0...userIds.count - 1 {
+                    usersDBRef.child(conversation.userIds![i]).observeSingleEvent(of: .value, with: { (snapshot) in
+                        let profile = CookingProfile(snapshot: snapshot)
+                        conversation.users![i] = profile
+                        if !conversation.users!.contains(where: {(profile) in return profile == nil}) {
+                            if let index = self.conversations.index(where: {$0.id == conversation.id}) {
+                            self.conversations[index] = conversation
+                            self.checkForUnreadConversations()
+                            self.tableView.reloadRows(at: [IndexPath(item: index, section: 0)], with: .automatic)
+                            }
+                        }
+                    })
+                    
+                }
+            }
+            
+        })
+    }
+    
 
     // MARK: - Table view data source
 
@@ -82,6 +127,7 @@ class MessagesOverviewViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "conversationCellID", for: indexPath) as! ConversationsCell
+        
         cell.conversation = conversations[indexPath.row]
         let profile = conversations[indexPath.row].allOtherUsers?[0]
         if let imageURL = profile?.profileImageURL {

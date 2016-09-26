@@ -15,9 +15,14 @@ class Conversation {
     var lastMessagedate :Date?
     var userIds : [String]?
     var users : [CookingProfile?]?
+    var unreadIds :[String]?
     var allOtherUsers : [CookingProfile?]? {get{
         return users?.filter({$0?.userId != user.uid})
         }}
+    var allOtherUsersIds : [String?]? {get{
+        return userIds?.filter({$0 != user.uid})
+        }}
+    
     
     init(snapshot :FIRDataSnapshot) {
     self.id = snapshot.key
@@ -27,6 +32,7 @@ class Conversation {
         if let dateString = (snapshot.value as! NSDictionary)["lastMessageDate"] as? String {
         self.lastMessagedate = dateFormatter.date(from: dateString)
         }
-    self.userIds = (((snapshot.value as! NSDictionary)["users"] as! NSDictionary).allKeys as? [String])
+    self.userIds = (((snapshot.value as! NSDictionary)["users"] as? NSDictionary)?.allKeys as? [String])
+    self.unreadIds = (((snapshot.value as! NSDictionary)["unread"] as? NSDictionary)?.allKeys as? [String])
     }
 }

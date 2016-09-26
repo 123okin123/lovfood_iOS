@@ -173,7 +173,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
         let date = dateFormatter.string(from: cookingEvent.eventDate!)
                 
         let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "hh:mm a"
+        timeFormatter.dateFormat = "hh:mm"
         let time = timeFormatter.string(from: cookingEvent.eventDate!)
         
         

@@ -29,6 +29,7 @@ class CookingOfferDetailViewController: UITableViewController {
         sendButton.layer.cornerRadius = 5
         if user.uid == cookingEvent!.userId {
         sendButton.isEnabled = false
+        sendButton.backgroundColor = UIColor.lightGray
         }
         }
     }
@@ -79,8 +80,12 @@ class CookingOfferDetailViewController: UITableViewController {
             "users" : [
                 user.uid : true,
                 self.cookingEvent!.userId! : true,
+            ],
+            "unread" : [
+                self.cookingEvent!.userId! : true,
             ]
         ]
+    
         let messageDictionary :NSDictionary = [
             "date" : dateFormatter.string(from: today),
             "senderId" : user.uid,

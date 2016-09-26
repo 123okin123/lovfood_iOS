@@ -19,6 +19,7 @@ class ConversationsCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var unreadIndicatorView: UIView! {didSet {
         unreadIndicatorView.layer.cornerRadius = 9
+        unreadIndicatorView.isHidden = true
         }}
     
     var conversation: Conversation? {didSet{
@@ -32,6 +33,15 @@ class ConversationsCell: UITableViewCell {
             
         }
         nameLabel.text = conversation!.allOtherUsers![0]?.userName
+        if let unreadIds = conversation!.unreadIds {
+        for id in unreadIds {
+            if id == user.uid {
+            unreadIndicatorView.isHidden = false
+            } 
+            }
+        } else {
+        unreadIndicatorView.isHidden = true
+        }
         }}
     
     override func awakeFromNib() {
