@@ -69,9 +69,8 @@ class CookingOfferDetailViewController: UITableViewController {
     @IBAction func sendButtonPressed(_ sender: UIButton) {
         if !messageSend {
         let today = Date()
-        print(today)
         let dateFormatter = DateFormatter()
- 
+        dateFormatter.dateFormat = chatDateFormat
         print(dateFormatter.string(from: today))
         
         let conversationDictionary :NSDictionary = [

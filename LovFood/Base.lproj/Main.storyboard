@@ -1115,7 +1115,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jYS-ax-HIt" id="2R4-XT-0kA">
-                                    <frame key="frameInset" width="342" height="89.5"/>
+                                    <frame key="frameInset" width="342" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BAG-5e-RIl">
@@ -1125,7 +1125,7 @@
                                                 <constraint firstAttribute="width" constant="75" id="vrg-x9-M98"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lisa Müller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9I-J5-rpv">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Lisa Müller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9I-J5-rpv">
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1159,11 +1159,12 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="t9I-J5-rpv" firstAttribute="leading" secondItem="BAG-5e-RIl" secondAttribute="trailing" constant="20" id="6QV-NN-mQF"/>
-                                        <constraint firstItem="uoz-gh-597" firstAttribute="top" secondItem="t9I-J5-rpv" secondAttribute="bottom" constant="17.5" id="DW5-8U-ATC"/>
+                                        <constraint firstItem="trH-xM-SBG" firstAttribute="centerY" secondItem="t9I-J5-rpv" secondAttribute="centerY" id="DPN-Av-w9M"/>
+                                        <constraint firstItem="uoz-gh-597" firstAttribute="top" secondItem="t9I-J5-rpv" secondAttribute="bottom" constant="15" id="DW5-8U-ATC"/>
+                                        <constraint firstItem="r2N-RM-yhu" firstAttribute="centerY" secondItem="t9I-J5-rpv" secondAttribute="centerY" id="Iki-9t-BcG"/>
                                         <constraint firstItem="t9I-J5-rpv" firstAttribute="leading" secondItem="trH-xM-SBG" secondAttribute="trailing" constant="8" id="J3Y-Vl-Gil"/>
-                                        <constraint firstItem="trH-xM-SBG" firstAttribute="top" secondItem="2R4-XT-0kA" secondAttribute="topMargin" id="LKR-BN-fi8"/>
                                         <constraint firstItem="r2N-RM-yhu" firstAttribute="trailing" secondItem="2R4-XT-0kA" secondAttribute="trailingMargin" constant="8" id="Qr6-Kj-ZDA"/>
-                                        <constraint firstItem="r2N-RM-yhu" firstAttribute="top" secondItem="2R4-XT-0kA" secondAttribute="topMargin" id="TSj-tV-f0d"/>
+                                        <constraint firstItem="r2N-RM-yhu" firstAttribute="leading" secondItem="t9I-J5-rpv" secondAttribute="trailing" constant="10" id="Que-0E-xeA"/>
                                         <constraint firstItem="t9I-J5-rpv" firstAttribute="top" secondItem="2R4-XT-0kA" secondAttribute="topMargin" id="gGJ-CJ-06q"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="uoz-gh-597" secondAttribute="trailing" constant="-8" id="iw9-8O-I6E"/>
                                         <constraint firstItem="BAG-5e-RIl" firstAttribute="leading" secondItem="2R4-XT-0kA" secondAttribute="leadingMargin" id="jcX-gf-q77"/>

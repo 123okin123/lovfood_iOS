@@ -28,7 +28,7 @@ class Conversation {
     self.id = snapshot.key
     self.lastMessage = (snapshot.value as! NSDictionary)["lastMessage"] as? String
     let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy_MM_dd hh:mm a"
+        dateFormatter.dateFormat = chatDateFormat
         if let dateString = (snapshot.value as! NSDictionary)["lastMessageDate"] as? String {
         self.lastMessagedate = dateFormatter.date(from: dateString)
         }

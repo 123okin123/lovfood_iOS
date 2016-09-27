@@ -40,3 +40,5 @@ public var geofireRef = dataBaseRef.child("geoFire")
 public var geoFire = GeoFire(firebaseRef: geofireRef)
 public var cookingEventsArrays = [[CookingEvent]]()
 
+public var chatDateFormat = "yyyy_MM_dd HH:mm:ss"
+

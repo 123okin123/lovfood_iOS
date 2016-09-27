@@ -10,6 +10,7 @@ target 'LovFood' do
     pod 'Firebase/Storage'
     pod 'Firebase/Core'
     pod 'Firebase/Messaging'
+    pod 'Firebase/Crash'
 	pod 'JSQMessagesViewController'
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'

@@ -144,85 +144,84 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
     
     
     @IBAction func savedFromCreateEventUnwindSegue(_ segue:UIStoryboardSegue) {
-      
+        
         let createEventVC = segue.source as! CreateEventViewController
         let cookingEvent = createEventVC.cookingEvent
- 
-  
-
+        
+        
+        
         var lat = 1.0
         var long = 1.0
         if let location = currentUserLocation {
-        lat = location.coordinate.latitude
-        long = location.coordinate.longitude
-        
-        
-        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            lat = location.coordinate.latitude
+            long = location.coordinate.longitude
 
-            if error != nil {
-                print("Reverse geocoder failed with error" + (error!.localizedDescription))
-                return
-            }
+            CLGeocoder().reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+                
+                if error != nil {
+                    print("Reverse geocoder failed with error" + (error!.localizedDescription))
+                    return
+                }
+                
+                if placemarks!.count > 0 {
+                    let pm = placemarks![0]
+                    
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy_MM_dd"
+                    let date = dateFormatter.string(from: cookingEvent.eventDate!)
+                    
+                    let timeFormatter = DateFormatter()
+                    timeFormatter.dateFormat = "hh:mm"
+                    let time = timeFormatter.string(from: cookingEvent.eventDate!)
+                    
+                    
+                    
+                    //for _ in 0...20 {
+                    // Creat Event
+                    let cookingEventRef = dataBaseRef.child("cookingEvents").childByAutoId()
+                    let cookingEventDictionary :NSDictionary = [
+                        "title" : cookingEvent.title!,
+                        "description" : cookingEvent.description!,
+                        "userId" : user!.uid,
+                        "eventDate" : date,
+                        "eventTime" : time,
+                        "coordinates" : [
+                            "lat": lat,
+                            "long": long,
+                        ],
+                        "locationString" : pm.subAdministrativeArea!,
+                        "occasion" : cookingEvent.occasion!.rawValue,
+                        "price" : 10,
+                        "imageURL" : String(describing: cookingEvent.imageURL!)
+                    ]
+                    cookingEventRef.setValue(cookingEventDictionary)
+                    dataBaseRef.child("cookingEventsByDate")
+                        .child(date)
+                        .child(cookingEventRef.key)
+                        .setValue(true)
+                    dataBaseRef.child("cookingEventsByOccasion")
+                        .child(cookingEvent.occasion!.rawValue)
+                        .child(cookingEventRef.key)
+                        .setValue(true)
+                    dataBaseRef.child("cookingEventsByHostGender")
+                        .child((userCookingProfile?.gender?.rawValue)!)
+                        .child(cookingEventRef.key)
+                        .setValue(true)
+                    geoFire?.setLocation(currentUserLocation, forKey: cookingEventRef.key)
+                    
+                    
+                    
+                    //   }
+                    
+                    
+                }
+                else {
+                    print("Problem with the data received from geocoder")
+                }
+            })
             
-            if placemarks!.count > 0 {
-                let pm = placemarks![0] 
-                
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy_MM_dd"
-        let date = dateFormatter.string(from: cookingEvent.eventDate!)
-                
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "hh:mm"
-        let time = timeFormatter.string(from: cookingEvent.eventDate!)
-        
-        
-        
-        //for _ in 0...20 {
-        // Creat Event
-        let cookingEventRef = dataBaseRef.child("cookingEvents").childByAutoId()
-        let cookingEventDictionary :NSDictionary = [
-            "title" : cookingEvent.title!,
-            "description" : cookingEvent.description!,
-            "userId" : user!.uid,
-            "eventDate" : date,
-            "eventTime" : time,
-            "coordinates" : [
-                "lat": lat,
-                "long": long,
-            ],
-            "locationString" : pm.subAdministrativeArea!,
-            "occasion" : cookingEvent.occasion!.rawValue,
-            "price" : 10,
-            "imageURL" : String(describing: cookingEvent.imageURL!)
-        ]
-        cookingEventRef.setValue(cookingEventDictionary)
-        dataBaseRef.child("cookingEventsByDate")
-            .child(date)
-            .child(cookingEventRef.key)
-            .setValue(true)
-        dataBaseRef.child("cookingEventsByOccasion")
-            .child(cookingEvent.occasion!.rawValue)
-            .child(cookingEventRef.key)
-            .setValue(true)
-        dataBaseRef.child("cookingEventsByHostGender")
-            .child((userCookingProfile?.gender?.rawValue)!)
-            .child(cookingEventRef.key)
-            .setValue(true)
-        geoFire?.setLocation(currentUserLocation, forKey: cookingEventRef.key)
-        
-
-        
-//   }
-                
-                
-            }
-            else {
-                print("Problem with the data received from geocoder")
-            }
-        })
-            
-            }
+        }
     }
         
 

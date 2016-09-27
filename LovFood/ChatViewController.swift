@@ -42,12 +42,13 @@ class ChatViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = conversation.allOtherUsers?[0]?.userName
-        
         setupBubbles()
         setupAvatarImages()
-       // collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         messageRef = dataBaseRef.child("messages").child(conversation.id!)
+        self.inputToolbar.contentView.rightBarButtonItem.setTitleColor(lovFoodColor, for: .normal)
+            
+        
 
     }
 
@@ -58,7 +59,7 @@ class ChatViewController: JSQMessagesViewController {
                                      senderDisplayName: String!, date: Date!) {
 
         let dateFormatter = DateFormatter()
-
+        dateFormatter.dateFormat = chatDateFormat
         let itemRef = messageRef.childByAutoId()
         let messageItem :NSDictionary = [
             "date": dateFormatter.string(from: date),
@@ -77,7 +78,6 @@ class ChatViewController: JSQMessagesViewController {
         for id in conversation!.allOtherUsersIds! {
         unreadDictionary[id!] = true
         }
-        print(unreadDictionary)
         
         conversationDictionary["unread"] = unreadDictionary
         
@@ -218,7 +218,7 @@ class ChatViewController: JSQMessagesViewController {
             
             
              let dateFormatter = DateFormatter()
-
+            dateFormatter.dateFormat = "yyyy_mm_dd hh:mm:ss a"
             guard let date = dateFormatter.date(from: dateString) else {return}
             self.addMessage(id, date: date, text: text)
             dataBaseRef.child("conversations").child(self.conversation.id!).child("unread").child(user.uid).removeValue()

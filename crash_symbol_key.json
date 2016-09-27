@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "lovfood-1328",
+  "private_key_id": "6852d74c978b734ccabf3555a237f0446ea46490",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDNjqv7predIAmv\nhQmXU2l6lC1kyxJZ20vi6uI4u5zh3HaIBskZ+SXumWcTl17QfyC4eX7m++fUeNjw\n+jtOWTOFijmhALXkpkLtMOV+v2QnfOd85fowC6loV/PDVG1/bSLi650uX0O2ZNKx\n1MsMZVFhU10m++ZaS0D9u/YxHMuThaiGwHmCuBrkhPFpdkPPA8bER4bVxVGjeCqy\nodK+g6ZICdUofqv1/H87DwtlucLyAA+7zwPZpFInWZ0K40epQ5rkgCb4U1hcPeu8\nd4yggcgnmK16t6F2a8XizaK1Cd5kctgmkUJf3oDUGdEp1tci3oImy/lvelIMO35S\nmmUluYtDAgMBAAECggEAUxoN34QMEULFh6cSNJJtPzgujeQnPBqTOF7bLDJ0/z7A\n0Mdlf9GhCzALYvk8RLBQiyPbMQjANb7RfcK8PTWExcUW/UcrQhARWJD/BtnbZLdz\nYqQbHFdqmpuMGfjE99IoW3MDrZ6n4lIqd+heWlmPp/gq3brS6sgnsyzNIBfTGYUi\nBBkz8YjBYSw9UttnwuKf/ZHQFOC8Jh1uTyzd1Nbe9m+1qXelOlbeRQdl4LOW0DDD\nEqLAlFQUEtPM8KVmA3XeOE0vNEIaGzeE+5jWF39/kyQWvBAOEIU5DgqMAQKr6Vhx\nt2RXkOf/SERQqYnImyO6GIcNJ7HbzBhex4x+MRuBgQKBgQD/twBPes9PXyDAGPY5\noc8vxo81R8Jm4QH4lUGsuCwMOVkD9vlt8Bv7zRg5nM7J++nHkgCcP7B5I9DYahrv\nXLkRn9711kUmdulLD5Iwrn3b2m8PeS2ShtMAB3pwDeOc/B4KOye4pkBXItYQXAbn\n0wVIqKkhGIj0jNbSn4vMFJsvQQKBgQDNyVomd9RcO4cMjvqDB1DzFtzppoHAokV0\nnSMcwvX8io25HRAIdyzPVje4q/wWxXOdv0q3a4dqJBZhKTqajdbmUD1d6b2+cGly\nn8u1gr/XrRUdf031TmPMlD541XG1WBhnxbqnDp7T5jK1ryZXrJBUppSmSD8aP8kN\ncWtHvnYdgwKBgBBhQo3Uyg7Fgy2K68rJSKJAz8+T5yn748pulSRhL8Egs0kDuvqF\n1OUOQC0AlGZv0ovMGGnp0n4QA0K5mTwX7mromLmanhdWqp76Ql0H8Fvy5AZTts2a\nAU4RLJCc8yWNKMdy/ppfW+O5AYlOu8qBw+bhluPd1HgFxYT8X1IVR9OBAoGBAKYc\nAzYMAhIVRvTfMN21eSVP7jB4ZEI/ejsgYGhmAzPAD5g+GmQK9tPCL6ZUxV8IMURD\nVidql9sYmCwDoLeDCNXOLUryU2Q2zxdkX4X7ramFoAa4bRA3H53Sh/73pBqSqtiR\nJhKVXaWEKqi3YgbhV3vNHy5+INmqZTsBs2wtFKDLAoGADHnfujZR/76msvTxSLyy\n+QtoLWtOZ2rfjIuquejEgx1GWZg9Xc1iSxmFYuIBS0iUwf+K8dFi7xsLgVW+pXVO\nFo2wR4DR8+vLmE2Qp55/Ph+unBQ7JRw0ZkiCFkT1F32AoOpzpYI3gncn836bnq/1\nog86ActdmQwk72CwIbJylxo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "symbol-upload-service-account@lovfood-1328.iam.gserviceaccount.com",
+  "client_id": "105099715245818000724",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/symbol-upload-service-account%40lovfood-1328.iam.gserviceaccount.com"
+}

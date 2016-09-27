@@ -20,6 +20,9 @@ PODS:
     - FirebaseAuth (= 3.0.5)
   - Firebase/Core (3.6.0):
     - Firebase/Analytics
+  - Firebase/Crash (3.6.0):
+    - Firebase/Analytics
+    - FirebaseCrash (= 1.0.7)
   - Firebase/Database (3.6.0):
     - Firebase/Analytics
     - FirebaseDatabase (= 3.0.3)
@@ -37,6 +40,12 @@ PODS:
   - FirebaseAuth (3.0.5):
     - FirebaseAnalytics (~> 3.3)
     - GoogleNetworkingUtilities (~> 1.2)
+    - GoogleUtilities (~> 1.2)
+  - FirebaseCrash (1.0.7):
+    - FirebaseAnalytics (~> 3.2)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
     - GoogleUtilities (~> 1.2)
   - FirebaseDatabase (3.0.3):
     - FirebaseAnalytics (~> 3.3)
@@ -75,6 +84,7 @@ DEPENDENCIES:
   - Firebase
   - Firebase/Auth
   - Firebase/Core
+  - Firebase/Crash
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
@@ -103,6 +113,7 @@ SPEC CHECKSUMS:
   Firebase: 34187200ef4979dbd485c7aa685ef078bf587c86
   FirebaseAnalytics: 3f5358d9104adf159cc8d99b7b501e50099a39ad
   FirebaseAuth: 75a062bbf2d3c97d1e6e55bbc110e13a6853e25d
+  FirebaseCrash: 2efeb3715b76ac843b841529ce413efb67e5fd4d
   FirebaseDatabase: 750a4a0fe18ef114318876fd654b2d9c671e0992
   FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
   FirebaseMessaging: 789d23fd796594dfb55dcf36cd325541df887c22
@@ -118,6 +129,6 @@ SPEC CHECKSUMS:
   MapleBacon: afb48c2ab4133e19e3c380a01d3b3cfc3ed2baf2
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 5d2faa723b9246c170237bd49cf2f74d94cf241a
+PODFILE CHECKSUM: 247678ae9c2a3237e4024bfec24e54435cde5caa
 
 COCOAPODS: 1.0.0

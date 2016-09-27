@@ -26,7 +26,7 @@ class ConversationsCell: UITableViewCell {
         messageLabel.text = conversation!.lastMessage
         if let lastMessagedate = conversation!.lastMessagedate {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd.mm.yy hh:mm a"
+            dateFormatter.dateFormat = "HH:mm, dd.MM.yy"
             dateLabel.text = dateFormatter.string(from: lastMessagedate)
             print(lastMessagedate)
             print(dateFormatter.string(from: lastMessagedate))
