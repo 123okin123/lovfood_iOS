@@ -162,42 +162,70 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
                     print("Reverse geocoder failed with error" + (error!.localizedDescription))
                     return
                 }
-                
-                if placemarks!.count > 0 {
+                var area = "no placemark"
+                if placemarks != nil {
                     let pm = placemarks![0]
+                    if  pm.subAdministrativeArea != nil {
+                    area = pm.subAdministrativeArea!
+                    } else {
+                    area = "no admin area"
+                    }
+                }
+                else {
+                    print("Problem with the data received from geocoder")
+                }
+                
+                var title = "no title"
+                var description = "no description"
+                var ocassion = "no occasion"
+                var imgURL = URL(fileURLWithPath: "no url")
+                var eventDateString = "no date string"
+                var eventTimeString = "no time string"
                     
+                if let titleN = cookingEvent.title {
+                title = titleN
+                }
+                if let descriptionN = cookingEvent.description {
+                description = descriptionN
+                }
+                if let occasionN = cookingEvent.occasion?.rawValue {
+                ocassion = occasionN
+                }
+                if let imgURLN = cookingEvent.imageURL {
+                imgURL = imgURLN
+                }
+                if let eventDate = cookingEvent.eventDate {
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy_MM_dd"
+                 eventDateString = dateFormatter.string(from: eventDate)
+                
                     
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy_MM_dd"
-                    let date = dateFormatter.string(from: cookingEvent.eventDate!)
-                    
-                    let timeFormatter = DateFormatter()
-                    timeFormatter.dateFormat = "hh:mm"
-                    let time = timeFormatter.string(from: cookingEvent.eventDate!)
-                    
-                    
-                    
+                let timeFormatter = DateFormatter()
+                timeFormatter.dateFormat = "HH:mm"
+                eventTimeString = timeFormatter.string(from: eventDate)
+                }
                     //for _ in 0...20 {
                     // Creat Event
                     let cookingEventRef = dataBaseRef.child("cookingEvents").childByAutoId()
                     let cookingEventDictionary :NSDictionary = [
-                        "title" : cookingEvent.title!,
-                        "description" : cookingEvent.description!,
+                        "title" : title,
+                        "description" : description,
                         "userId" : user!.uid,
-                        "eventDate" : date,
-                        "eventTime" : time,
+                        "eventDate" : eventDateString,
+                        "eventTime" : eventTimeString,
                         "coordinates" : [
                             "lat": lat,
                             "long": long,
                         ],
-                        "locationString" : pm.subAdministrativeArea!,
-                        "occasion" : cookingEvent.occasion!.rawValue,
+                        "locationString" :  area,
+                        "occasion" : ocassion,
                         "price" : 10,
-                        "imageURL" : String(describing: cookingEvent.imageURL!)
+                        "imageURL" : String(describing: imgURL)
                     ]
                     cookingEventRef.setValue(cookingEventDictionary)
                     dataBaseRef.child("cookingEventsByDate")
-                        .child(date)
+                        .child(eventDateString)
                         .child(cookingEventRef.key)
                         .setValue(true)
                     dataBaseRef.child("cookingEventsByOccasion")
@@ -215,10 +243,7 @@ class MyEventsViewController: UICollectionViewController, UICollectionViewDelega
                     //   }
                     
                     
-                }
-                else {
-                    print("Problem with the data received from geocoder")
-                }
+
             })
             
         }

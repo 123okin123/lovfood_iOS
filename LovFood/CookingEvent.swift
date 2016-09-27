@@ -67,7 +67,7 @@ open class CookingEvent {
                 print((dateString + " " + timeString))
                 
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy_MM_dd hh:mm"
+                dateFormatter.dateFormat = "yyyy_MM_dd HH:mm"
                 self.eventDate = dateFormatter.date(from: (dateString + " " + timeString))
             }
         }

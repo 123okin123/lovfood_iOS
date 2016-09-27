@@ -85,6 +85,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     if snapshot.exists(){
                       //  print("user is in DB")
                         user = userToLoggin
+                        // check Version
+                        if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                           // print(version)
+                            userDBRef.child("currentAppBuild").setValue(build)
+                        }
+                        // check Version end
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let tabVC = storyboard.instantiateViewController(withIdentifier: "tabBarControllerID") as! TabBarController
                         let snapshotView = self.window?.snapshotView(afterScreenUpdates: true)

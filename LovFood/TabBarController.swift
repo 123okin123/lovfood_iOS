@@ -46,7 +46,7 @@ class TabBarController: UITabBarController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("tabVCviewDidApppear")
-        locationQuery = (geoFire?.query(at: currentUserLocation, withRadius: 25.0))!
+        locationQuery = (geoFire?.query(at: currentUserLocation, withRadius: 1000.0))!
         for i in 0...13{
             addDBObserverFor(i)
         }
