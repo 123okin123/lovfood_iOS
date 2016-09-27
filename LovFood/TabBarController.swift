@@ -86,7 +86,7 @@ class TabBarController: UITabBarController {
         
         // Get all CookingEventIDs Nearby
         locationQuery.observe(.keyEntered, with: { (key: String?, location: CLLocation?) in
-       print(dateFormatter.string(from: date))
+       
             // Check if CookingEventID is in cookingEventsByDateDB
                 cookingEventsByDateDBRef
                 .child(dateFormatter.string(from: date))

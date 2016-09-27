@@ -10,6 +10,8 @@ import UIKit
 import MapKit
 import Firebase
 import FirebaseDatabase
+import FirebaseInstanceID
+import FirebaseMessaging
 import FBSDKCoreKit
 import GeoFire
 import UserNotifications
@@ -27,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // INIT Firebase
+        FIRApp.configure()
+        FIRDatabase.database().persistenceEnabled = true
 
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage(named: "navBarShadow")
@@ -37,13 +42,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("launched from notifications \(aps)")
         }
         
-        // INIT Firebase
-        FIRApp.configure()
-        FIRDatabase.database().persistenceEnabled = true
+
 
         
         if #available(iOS 10.0, *) {
-            
+    
             let authOptions : UNAuthorizationOptions = [.alert, .badge, .sound]
             UNUserNotificationCenter.current().requestAuthorization(
                 options: authOptions,
@@ -57,22 +60,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         } else {
             let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
             application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
         }
-
+        
+        application.registerForRemoteNotifications()
+        // Add observer for InstanceID token refresh callback.
+        NotificationCenter.default.addObserver(self,
+                                                         selector: #selector(self.tokenRefreshNotification),
+                                                         name: NSNotification.Name.firInstanceIDTokenRefresh,
+                                                         object: nil)
+        
+        
+        
         
         FIRAuth.auth()?.addStateDidChangeListener { auth, userToLoggin in
             if let userToLoggin = userToLoggin {
                 
-                print("addAuth successfull for user \(userToLoggin)")
+                //print("addAuth successfull for user \(userToLoggin)")
 
                 user = userToLoggin
               
                 userDBRef = dataBaseRef.child("users").child(user.uid)
                 userDBRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                    print(snapshot)
+                   // print(snapshot)
                     if snapshot.exists(){
-                        print("user is in DB")
+                      //  print("user is in DB")
                         user = userToLoggin
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let tabVC = storyboard.instantiateViewController(withIdentifier: "tabBarControllerID") as! TabBarController
@@ -88,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         
 
                         userDBRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                        print("getting user profle")
+                    //    print("getting user profle")
                         userCookingProfile = CookingProfile(snapshot: snapshot)
 
                         if let profileImageURLString = (snapshot.value as! NSDictionary)["profileImageURL"] as? String {
@@ -99,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                     print("thers an error in the log")
                                 } else {
                                     DispatchQueue.main.async {
-                                        print("getting users profile image")
+                            //            print("getting users profile image")
                                         userCookingProfile?.profileImage = UIImage(data: data!)
                                     }
                                 }
@@ -109,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                       })
                         
                     } else {
-                        print("user is not in DB")
+                 //       print("user is not in DB")
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let loginVC = storyboard.instantiateViewController(withIdentifier: "loginViewControllerID") as! LoginViewController
                         let rootViewController = self.window!.rootViewController
@@ -117,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 })
             } else {
-                print("addAuth failed")
+           //     print("addAuth failed")
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let loginVC = storyboard.instantiateViewController(withIdentifier: "loginViewControllerID") as! LoginViewController
                 let rootViewController = self.window!.rootViewController
@@ -139,11 +150,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window?.tintColor = lovFoodColor
         //FACEBOOK
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
+        print("FIRDevice Token:", FIRInstanceID.instanceID().token())
         return true
-
-        
-
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -154,6 +162,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        FIRMessaging.messaging().disconnect()
+        print("Disconnected from FCM.")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -164,6 +174,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         //FACEBOOK
         FBSDKAppEvents.activateApp()
+        
+        connectToFcm()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -182,12 +194,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        if notificationSettings.types != UIUserNotificationType() {
-            
-        }
-        
-    }
+ 
+    
+
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let tokenChars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
         var tokenString = ""
@@ -195,10 +205,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         for i in 0..<deviceToken.count {
             tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
         }
-        
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.unknown)
         print("Device Token:", tokenString)
+        print("FIRDevice Token:", FIRInstanceID.instanceID().token())
     }
-    
+   
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register:", error)
     }
@@ -216,13 +227,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("%@", userInfo)
     }
     
+
     
-
-
-
-
+ 
+    
+    // [START refresh_token]
+    func tokenRefreshNotification(notification: NSNotification) {
+        if let refreshedToken = FIRInstanceID.instanceID().token() {
+            print("InstanceID token: \(refreshedToken)")
+        }
         
+        // Connect to FCM since connection may have failed when attempted before having a token.
+        connectToFcm()
+    }
+    // [END refresh_token]
+    
+    // [START connect_to_fcm]
+    func connectToFcm() {
+        FIRMessaging.messaging().connect { (error) in
+            if (error != nil) {
+                print("Unable to connect with FCM. \(error)")
+            } else {
+                print("Connected to FCM.")
+            }
+        }
+    }
+    // [END connect_to_fcm]
+
 
 
 }
+
+
+// [START ios_10_message_handling]
+@available(iOS 10, *)
+extension AppDelegate {
+    
+    // Receive displayed notifications for iOS 10 devices.
+    func userNotificationCenter(center: UNUserNotificationCenter,
+                                willPresentNotification notification: UNNotification,
+                                withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        // Print message ID.
+        print("Message ID: \(userInfo["gcm.message_id"]!)")
+        
+        // Print full message.
+        print("%@", userInfo)
+    }
+}
+
+extension AppDelegate  {
+    // Receive data message on iOS 10 devices.
+    func applicationReceivedRemoteMessage(remoteMessage: FIRMessagingRemoteMessage) {
+        print("%@", remoteMessage.appData)
+    }
+}
+
+// [END ios_10_message_handling]
 
